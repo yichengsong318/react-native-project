@@ -70,9 +70,9 @@ const HomeNavigator = createBottomTabNavigator({
 // Auth Navigator
 
 const AuthNavigator = createStackNavigator({
-    Login,
     Signup,
-}, createOptions('Login'));
+    Login,
+}, createOptions('Signup'));
 
 // ---------------------------------------------------------
 // App Navigator

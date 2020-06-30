@@ -34,9 +34,11 @@ const Login = ({ navigation }) => {
             style={styles.LoginScreen}
         >
             <AppScrollView>
-                <Image source={require('../../assets/logo-white.png')}
+                <Image
+                    source={require('../../assets/logo-white.png')}
                     resizeMode="contain"
-                    style={styles.logo}/>
+                    style={styles.logo}
+                />
 
                 <View style={styles.form}>
                     <AppInput
