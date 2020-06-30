@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Loading from '../screens/Loading';
 import Login from '../screens/auth/Login';
+import Signup from '../screens/auth/Signup';
 import Goals from "../screens/goals/Goals";
 import GoalInvite from "../screens/goals/GoalInvites";
 import Settings from "../screens/Settings";
@@ -70,6 +71,7 @@ const HomeNavigator = createBottomTabNavigator({
 
 const AuthNavigator = createStackNavigator({
     Login,
+    Signup,
 }, createOptions('Login'));
 
 // ---------------------------------------------------------

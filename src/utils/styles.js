@@ -9,3 +9,7 @@ export const colors = {
     warning: '#f2c94c',
     danger: '#dd2c00',
 };
+
+export const general = {
+    borderRadius: 10,
+};
