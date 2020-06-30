@@ -1,7 +1,9 @@
 import React, { useState, useContext, useRef } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, Linking, ActivityIndicator } from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
+import LinearGradient from 'react-native-linear-gradient';
 import { storeContext } from '../../store';
+import AppScrollView from '../../components/AppScrollView';
 import AppInput from '../../components/AppInput';
 import AppButton from '../../components/AppButton';
 import * as appStyles from '../../utils/styles';
@@ -27,49 +29,54 @@ const Login = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.LoginScreen}>
-            <Image source={require('../../assets/logo.png')}
-                resizeMode="contain"
-                style={styles.logo}/>
+        <LinearGradient
+            colors={[appStyles.colors.primary, appStyles.colors.secondary]}
+            style={styles.LoginScreen}
+        >
+            <AppScrollView>
+                <Image source={require('../../assets/logo-white.png')}
+                    resizeMode="contain"
+                    style={styles.logo}/>
 
-            <View style={styles.form}>
-                <AppInput
-                    onChangeText={setEmail}
-                    placeholder="Email address"
-                    returnKeyType="next"
-                    onSubmitEditing={() => passwordInput.current.focus()}
-                    blurOnSubmit={false}
-                    keyboardType="email-address"
-                    style={styles.input}
-                />
-                <AppInput
-                    ref={passwordInput}
-                    onChangeText={setPassword}
-                    placeholder="Password"
-                    onSubmitEditing={handleLogin}
-                    style={styles.input}
-                    secureTextEntry
-                />
+                <View style={styles.form}>
+                    <AppInput
+                        onChangeText={setEmail}
+                        placeholder="Email address"
+                        returnKeyType="next"
+                        onSubmitEditing={() => passwordInput.current.focus()}
+                        blurOnSubmit={false}
+                        keyboardType="email-address"
+                        style={styles.input}
+                    />
+                    <AppInput
+                        ref={passwordInput}
+                        onChangeText={setPassword}
+                        placeholder="Password"
+                        onSubmitEditing={handleLogin}
+                        style={styles.input}
+                        secureTextEntry
+                    />
 
-                <View style={styles.buttonContainer}>
-                    <AppButton onPress={handleLogin} title="Login" style={styles.button} disabled={isPending}/>
+                    <View style={styles.buttonContainer}>
+                        <AppButton onPress={handleLogin} title="Login" style={styles.button} disabled={isPending}/>
+                    </View>
+
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity onPress={() => Linking.openURL('https://www.strive2goal.com/login/forgot')}>
+                            <Text style={{ fontSize: 16, color: '#fff' }}>Forgot Password?</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    { isPending ? <ActivityIndicator size="large"/> : null }
                 </View>
 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity onPress={() => Linking.openURL('https://www.strive2goal.com/login/forgot')}>
-                        <Text style={{ fontSize: 16, color: appStyles.colors.linkDark }}>Forgot Password?</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+                        <Text style={{ fontSize: 16, color: '#fff' }}>Don't have an account? Signup</Text>
                     </TouchableOpacity>
                 </View>
-
-                { isPending ? <ActivityIndicator size="large"/> : null }
-            </View>
-
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-                    <Text style={{ fontSize: 16, color: appStyles.colors.linkDark }}>Don't have an account? Signup</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+            </AppScrollView>
+        </LinearGradient>
     );
 };
 
