@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity, Linking, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import { storeContext } from '../../store';
@@ -21,7 +21,7 @@ const Signup = ({ navigation }) => {
 
     const handleSignup = async () => {
         setIsPending(true);
-        // const success = await store.userStore.Signup(email, password);
+        const success = await store.userStore.signup(firstName, lastName, email, password);
         setIsPending(false);
         if (!success) return;
 

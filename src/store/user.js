@@ -38,6 +38,27 @@ export class UserStore {
     }
 
     @action
+    async signup(firstName, lastName, email, password) {
+        showMessage({ message: 'Signing up...', type: 'info' });
+
+        try {
+            const res = await api.makeApiPostRequest('users', { firstName, lastName, email, password });
+            if (!res.ok) {
+                const message = res.body.error ? res.body.error.message : 'Error: Signup form incomplete';
+                showMessage({ message, type: 'danger' });
+                return false;
+            }
+
+            await this.login(email, password);
+
+            return true;
+        } catch (error) {
+            showMessage({ message: 'NetworkError: Signup request failed', type: 'danger' });
+            return false;
+        }
+    }
+
+    @action
     async logout() {
         this.user = null;
         this.token = null;
