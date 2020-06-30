@@ -12,7 +12,7 @@ const Loading = observer(({ navigation }) => {
             if (!store.initialized) await store.init();
             navigation.dispatch(StackActions.reset({
                 index: 0, key: null, actions: [
-                    NavigationActions.navigate({ routeName: (store.userStore.user ? 'Home' : 'Home') }),
+                    NavigationActions.navigate({ routeName: (store.userStore.user ? 'Home' : 'Auth') }),
                 ],
             }));
         })();

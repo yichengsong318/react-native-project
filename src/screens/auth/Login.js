@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
-import { storeContext } from '../store';
+import { storeContext } from '../../store';
 
 const Login = ({ navigation }) => {
     const store = useContext(storeContext);

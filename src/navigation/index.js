@@ -4,9 +4,9 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Loading from '../screens/Loading';
-import Login from '../screens/Login';
-import Goals from "../screens/Goals";
-import Accountability from "../screens/Accountability";
+import Login from '../screens/auth/Login';
+import Goals from "../screens/goals/Goals";
+import GoalInvite from "../screens/goals/GoalInvites";
 import Settings from "../screens/Settings";
 import * as styles from '../utils/styles';
 
@@ -29,7 +29,7 @@ const createTabOptions = (Screen, title, iconName) => {
             let tabBarVisible = true;
             if (navigation.state.routes) {
                 const route = navigation.state.routes[navigation.state.index];
-                tabBarVisible = /^Goals|Accountability|SettingsTab$/.test(route.routeName);
+                tabBarVisible = /^Goals|GoalInvite|SettingsTab$/.test(route.routeName);
             }
 
             return { title, tabBarIcon, tabBarVisible };
@@ -45,18 +45,18 @@ const GoalNavigator = createStackNavigator({
 }, createOptions('Goals'));
 
 // ---------------------------------------------------------
-// Accountability Navigator
+// GoalInvite Navigator
 
-const AccountabilityNavigator = createStackNavigator({
-    Accountability,
-}, createOptions('Accountability'));
+const GoalInviteNavigator = createStackNavigator({
+    GoalInvite,
+}, createOptions('GoalInvite'));
 
 // ---------------------------------------------------------
 // Home Navigator
 
 const HomeNavigator = createBottomTabNavigator({
     GoalTab: createTabOptions(GoalNavigator, 'Goals', 'rocket'),
-    AccountabilityTab: createTabOptions(AccountabilityNavigator, 'Accountability', 'users'),
+    GoalInviteTab: createTabOptions(GoalInviteNavigator, 'Invites', 'envelope'),
     SettingsTab: createTabOptions(Settings, 'Settings', 'cog'),
 }, createOptions('GoalTab', {
     tabBarOptions: {
