@@ -1,0 +1,11 @@
+{
+    "cSpell.words": [
+        "mobx",
+        "refreshable",
+        "swipeable",
+    ],
+    "files.exclude": {
+        "android": true,
+        "ios": true
+    },
+}
