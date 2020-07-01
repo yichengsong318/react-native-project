@@ -13,3 +13,8 @@ export const colors = {
 export const general = {
     borderRadius: 10,
 };
+
+export const infoBox = {
+    subtitleFontSize: 14,
+    titleFontSize: 18,
+};

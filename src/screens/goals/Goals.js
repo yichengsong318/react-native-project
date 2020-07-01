@@ -5,7 +5,8 @@ import { observer } from "mobx-react-lite";
 import { storeContext } from '../../store';
 import RefreshableScrollView from '../../components/RefreshableScrollView';
 import Header from '../../components/Header';
-// import GoalItem from '../../components/GoalItem';
+import SectionHeader from '../../components/SectionHeader';
+import GoalItem from '../../components/GoalItem';
 import * as appStyles from '../../utils/styles';
 
 const Goals = observer(({ navigation }) => {
@@ -18,20 +19,16 @@ const Goals = observer(({ navigation }) => {
     }
 
     const goalsByType = [
-        ['My Goals', store.goalStore.getMyGoals()],
-        ['Help Others', store.goalStore.getJoinedGoals()],
+        ['My Goals', store.goalStore.getMyGoals],
+        ['Help Others', store.goalStore.getJoinedGoals],
     ];
 
     const GoalTypeGroup = ({ type, goals }) => (
         <View>
-            <Text>{type}</Text>
+            <SectionHeader title={type}/>
             {goals.map((goal) => (
-                <Text key={goal.id}>{goal.name}</Text>
+                <GoalItem onPress={() => handleEditGoal(goal)} key={goal.id} goal={goal}/>
             ))}
-
-            {/* {goals.map((goal) => (
-                <GoalItem onPress={() => handleEditGoal(goal)} key={goal._id} goal={goal}/>
-            ))} */}
         </View>
     );
 

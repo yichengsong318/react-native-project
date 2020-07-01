@@ -43,6 +43,10 @@ export async function makeApiPostRequest(url, body = {}, options = {}) {
     return makeRequest(getApiUrl(url), _.merge(getApiOptions(), postOptions, options));
 }
 
+export async function makeApiDelRequest(url, options = {}) {
+    return makeRequest(getApiUrl(url), _.merge(getApiOptions(), { method: 'DELETE' }, options));
+}
+
 export async function makeApiPhotoPostRequest(photo) {
     const formData = new FormData();
     formData.append('photo', {
