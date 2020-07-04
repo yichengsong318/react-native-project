@@ -37,7 +37,7 @@ export class GoalStore {
             const resGoalsJoined = await api.makeApiGetRequest('goals/joined');
             if (!resGoalsJoined.ok) return;
 
-            this.goals = [...resGoals.body, ...resGoalsJoined.body.map(({ goal }) => goal)];
+            this.goals = [...resGoals.body, ...resGoalsJoined.body];
 
             await this.save();
         } catch (error) {

@@ -1,11 +1,11 @@
 import React, { useContext, useRef } from 'react';
-import { StyleSheet, Animated, Text, Alert, Platform, TouchableOpacity } from "react-native";
+import { StyleSheet, Animated, Alert, Platform, TouchableOpacity } from "react-native";
 import { RectButton } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import InfoBox from '../components/InfoBox';
+import GoalPartners from '../components/GoalPartners';
 import { storeContext } from '../store'
-// import { formatDate } from '../utils/formatting';
 import * as appStyles from '../utils/styles';
 
 const AnimatedIcon = Animated.createAnimatedComponent(Icon);
@@ -65,7 +65,7 @@ const GoalItem = ({ onPress, goal }) => {
                 title={goal.name}
                 subtitle={goal.type.toUpperCase()}
             >
-                <Text>Partners</Text>
+                <GoalPartners goal={goal}/>
             </InfoBox>
         </Swipeable>
     )
