@@ -18,3 +18,7 @@ export const infoBox = {
     subtitleFontSize: 14,
     titleFontSize: 18,
 };
+
+export const goals = {
+    gutter: 10,
+};

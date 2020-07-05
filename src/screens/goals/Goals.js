@@ -11,11 +11,10 @@ import * as appStyles from '../../utils/styles';
 
 const Goals = observer(({ navigation }) => {
     const store = useContext(storeContext);
-    const goals = store.goalStore.goals;
 
-    const handleEditGoal = (goal) => {
-        // store.goalStore.setCurrentGoal(goal);
-        // navigation.navigate('CreateGoal');
+    const handleViewGoal = (goal) => {
+        store.goalStore.setCurrentGoal(goal);
+        navigation.navigate('GoalView');
     }
 
     const goalsByType = [
@@ -26,8 +25,8 @@ const Goals = observer(({ navigation }) => {
     const GoalTypeGroup = ({ type, goals }) => (
         <View>
             <SectionHeader title={type}/>
-            {goals.map((goal) => (
-                <GoalItem onPress={() => handleEditGoal(goal)} key={goal.id} goal={goal}/>
+            {store.goalStore.goals.map((goal) => (
+                <GoalItem onPress={() => handleViewGoal(goal)} key={goal.id} goal={goal}/>
             ))}
         </View>
     );
@@ -44,7 +43,7 @@ const Goals = observer(({ navigation }) => {
             />
 
             <RefreshableScrollView>
-                {goals.length ?
+                {store.goalStore.goals.length ?
                     goalsByType.map(([type, goals]) => (
                         <GoalTypeGroup key={type} type={type} goals={goals}/>
                     )) :

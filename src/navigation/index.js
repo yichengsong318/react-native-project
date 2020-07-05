@@ -7,9 +7,10 @@ import Loading from '../screens/Loading';
 import Login from '../screens/auth/Login';
 import Signup from '../screens/auth/Signup';
 import Goals from "../screens/goals/Goals";
+import GoalView from "../screens/goals/GoalView";
 import GoalInvite from "../screens/goals/GoalInvites";
 import Settings from "../screens/Settings";
-import * as styles from '../utils/styles';
+import * as appStyles from '../utils/styles';
 
 const createOptions = (initialRouteName, opts = {}) => {
     return { initialRouteName, headerMode: 'none', ...opts };
@@ -43,6 +44,7 @@ const createTabOptions = (Screen, title, iconName) => {
 
 const GoalNavigator = createStackNavigator({
     Goals,
+    GoalView,
 }, createOptions('Goals'));
 
 // ---------------------------------------------------------
@@ -61,7 +63,7 @@ const HomeNavigator = createBottomTabNavigator({
     SettingsTab: createTabOptions(Settings, 'Settings', 'cog'),
 }, createOptions('GoalTab', {
     tabBarOptions: {
-        activeTintColor: styles.colors.primary,
+        activeTintColor: appStyles.colors.primary,
         labelStyle: { fontSize: 13 },
     },
 }));
