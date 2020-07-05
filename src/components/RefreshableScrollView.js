@@ -8,7 +8,15 @@ const RefreshableScrollView = (props) => {
 
     const handleRefresh = async () => {
         setRefreshing(true);
-        await store.refresh();
+
+        switch (props.onRefresh) {
+        case 'fetchCurrentGoal':
+            await store.goalStore.fetchCurrentGoal();
+            break;
+        default:
+            await store.refresh();
+        }
+
         setRefreshing(false);
     }
 

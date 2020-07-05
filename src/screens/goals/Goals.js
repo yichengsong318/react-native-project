@@ -14,6 +14,8 @@ const Goals = observer(({ navigation }) => {
 
     const handleViewGoal = (goal) => {
         store.goalStore.setCurrentGoal(goal);
+        store.goalStore.fetchCurrentGoal();
+
         navigation.navigate('GoalView');
     }
 

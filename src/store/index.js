@@ -31,6 +31,7 @@ class Store {
         const state = await NetInfo.fetch();
         if (state.isInternetReachable) {
             await this.goalStore.refresh();
+            await this.goalStore.fetchCurrentGoal();
         } else {
             showMessage({ message: 'Internet is unreachable, continue in offline mode.', type: 'none' });
         }

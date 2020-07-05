@@ -10,6 +10,7 @@ export class GoalStore {
 
     @observable goals = [];
     @observable currentGoalId;
+    @observable isFetchingCurrentGoal = false;
 
     @computed
     get currentGoal() {
@@ -28,7 +29,6 @@ export class GoalStore {
 
     @action
     async refresh() {
-        // TODO: Error handling.
         try {
             const resGoals = await api.makeApiGetRequest('goals');
             if (!resGoals.ok) return;
@@ -40,7 +40,7 @@ export class GoalStore {
 
             await this.save();
         } catch (error) {
-
+            // TODO: Error handling.
         }
     }
 
@@ -48,6 +48,26 @@ export class GoalStore {
     setCurrentGoal(targetGoal) {
         const goal = this.goals.find(goal => goal.id === targetGoal.id);
         this.currentGoalId = goal.id;
+    }
+
+    @action
+    async fetchCurrentGoal() {
+        if (!this.currentGoalId || this.isFetchingCurrentGoal) return;
+        this.isFetchingCurrentGoal = true;
+
+        try {
+            const res = await api.makeApiGetRequest(`goals/${this.currentGoalId}`);
+            if (!res.ok) return;
+
+            const currentIndex = this.goals.findIndex(goal => goal.id === this.currentGoalId);
+            this.goals[currentIndex] = res.body;
+            this.isFetchingCurrentGoal = false;
+
+            await this.save();
+        } catch (error) {
+            this.isFetchingCurrentGoal = false;
+            // TODO: Error handling.
+        }
     }
 
     @action
