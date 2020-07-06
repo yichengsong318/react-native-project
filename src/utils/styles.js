@@ -6,8 +6,10 @@ export const colors = {
     divider: '#d5d5d5',
     bg00: '#fff',
     bg10: '#e8e8e8',
-    warning: '#f2c94c',
-    danger: '#dd2c00',
+    warning: '#f1c40f',
+    danger: '#e74c3c',
+    success: '#2ecc71',
+    muted: '#8492a6',
 };
 
 export const general = {

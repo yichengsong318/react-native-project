@@ -43,6 +43,16 @@ export async function makeApiPostRequest(url, body = {}, options = {}) {
     return makeRequest(getApiUrl(url), _.merge(getApiOptions(), postOptions, options));
 }
 
+export async function makeApiPatchRequest(url, body = {}, options = {}) {
+    const patchOptions = {
+        method: 'PATCH',
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+    };
+
+    return makeRequest(getApiUrl(url), _.merge(getApiOptions(), patchOptions, options));
+}
+
 export async function makeApiDelRequest(url, options = {}) {
     return makeRequest(getApiUrl(url), _.merge(getApiOptions(), { method: 'DELETE' }, options));
 }

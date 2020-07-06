@@ -93,6 +93,54 @@ export class GoalStore {
     }
 
     @action
+    async removeTask(targetTask) {
+        try {
+            const res = await api.makeApiDelRequest(`tasks/${targetTask.id}`);
+            if (!res.ok) {
+                const message = res.body.error ? res.body.error.message : 'Error: Failed to delete task';
+                showMessage({ message, type: 'danger' });
+                return false;
+            }
+
+            showMessage({ message: 'Task has been deleted', type: 'success' });
+
+            this.currentGoal.tasks = this.currentGoal.tasks.filter(task => task.id !== targetTask.id);
+            this.save();
+
+            return true;
+        } catch (error) {
+            showMessage({ message: 'NetworkError: Failed to delete task', type: 'danger' });
+            return false;
+        }
+    }
+
+    @action
+    async setCompletedAtTask(targetTask, completedAt) {
+        try {
+            const res = await api.makeApiPatchRequest(`tasks/${targetTask.id}/complete`, { completedAt });
+            if (!res.ok) {
+                const message = res.body.error ? res.body.error.message : 'Error: Failed to update task';
+                showMessage({ message, type: 'danger' });
+                return false;
+            }
+
+            this.currentGoal.tasks = this.currentGoal.tasks.map((task) => {
+                if (task.id !== targetTask.id) return task;
+
+                return { ...task, ...res.body };
+            });
+
+            this.save();
+
+            return true;
+        } catch (error) {
+            console.log('error', error)
+            showMessage({ message: 'NetworkError: Failed to update task', type: 'danger' });
+            return false;
+        }
+    }
+
+    @action
     async save() {
         await AsyncStorage.setItem('@GOAL:goals', JSON.stringify(this.goals))
             .catch(error => console.log('ERROR:', error));
