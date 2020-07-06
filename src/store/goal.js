@@ -93,6 +93,28 @@ export class GoalStore {
     }
 
     @action
+    async createTask(task) {
+        try {
+            const res = await api.makeApiPostRequest('tasks', task);
+            if (!res.ok) {
+                const message = res.body.error ? res.body.error.message : 'Error: Failed to create task';
+                showMessage({ message, type: 'danger' });
+                return false;
+            }
+
+            showMessage({ message: 'Task has been created', type: 'success' });
+
+            this.currentGoal.tasks = [res.body, ...this.currentGoal.tasks]
+            this.save();
+
+            return true;
+        } catch (error) {
+            showMessage({ message: 'NetworkError: Failed to create task', type: 'danger' });
+            return false;
+        }
+    }
+
+    @action
     async removeTask(targetTask) {
         try {
             const res = await api.makeApiDelRequest(`tasks/${targetTask.id}`);

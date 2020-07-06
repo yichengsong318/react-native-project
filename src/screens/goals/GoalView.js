@@ -4,18 +4,14 @@ import { observer } from "mobx-react-lite";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { storeContext } from '../../store';
 import RefreshableScrollView from '../../components/RefreshableScrollView';
-import AppInput from '../../components/AppInput';
 import GoalPartners from '../../components/GoalPartners';
 import TaskList from '../../components/TaskList';
+import TaskAddBar from '../../components/TaskAddBar';
 import * as appStyles from '../../utils/styles';
 
 const GoalView = observer(({ navigation }) => {
     const store = useContext(storeContext);
     const goal = store.goalStore.currentGoal;
-
-    const handleCreateTask = async () => {
-        // ...
-    };
 
     return (
         <View style={styles.GoalViewScreen}>
@@ -40,14 +36,7 @@ const GoalView = observer(({ navigation }) => {
                 </RefreshableScrollView>
             </View>
             <View style={styles.footer}>
-                <AppInput
-                    style={styles.createTaskInput}
-                    placeholder="I want to..."
-                    onSubmitEditing={handleCreateTask}
-                />
-                <TouchableOpacity style={styles.createTaskButton}>
-                    <Icon name="plus" size={20} style={styles.createTaskButtonIcon}/>
-                </TouchableOpacity>
+                <TaskAddBar/>
             </View>
         </View>
     );
@@ -103,24 +92,6 @@ const styles = StyleSheet.create({
         backgroundColor: appStyles.colors.bg00,
         borderTopWidth: 1,
         borderTopColor: appStyles.colors.divider,
-    },
-    createTaskInput: {
-        flex: 1,
-        padding: appStyles.goals.gutter,
-        marginRight: appStyles.goals.gutter,
-        height: 40,
-        borderRadius: 40,
-    },
-    createTaskButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 40,
-        width: 40,
-        borderRadius: 40,
-        backgroundColor: appStyles.colors.primary,
-    },
-    createTaskButtonIcon: {
-        color: '#fff',
     },
 });
 
