@@ -8,6 +8,7 @@ import Login from '../screens/auth/Login';
 import Signup from '../screens/auth/Signup';
 import Goals from "../screens/goals/Goals";
 import GoalView from "../screens/goals/GoalView";
+import TaskEdit from "../screens/goals/TaskEdit";
 import GoalInvite from "../screens/goals/GoalInvites";
 import Settings from "../screens/Settings";
 import * as appStyles from '../utils/styles';
@@ -45,6 +46,7 @@ const createTabOptions = (Screen, title, iconName) => {
 const GoalNavigator = createStackNavigator({
     Goals,
     GoalView,
+    TaskEdit,
 }, createOptions('Goals'));
 
 // ---------------------------------------------------------

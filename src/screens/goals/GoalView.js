@@ -31,7 +31,7 @@ const GoalView = observer(({ navigation }) => {
                 <RefreshableScrollView style={styles.goalMain} onRefresh="fetchCurrentGoal">
                     {store.goalStore.isFetchingCurrentGoal && !goal.tasks ?
                         <Text>Loading...</Text> :
-                        <TaskList tasks={goal.tasks}/>
+                        <TaskList tasks={goal.tasks} navigation={navigation}/>
                     }
                 </RefreshableScrollView>
             </View>

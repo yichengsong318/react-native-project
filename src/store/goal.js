@@ -137,9 +137,12 @@ export class GoalStore {
     }
 
     @action
-    async setCompletedAtTask(targetTask, completedAt) {
+    async updateTask(targetTask, patch) {
         try {
-            const res = await api.makeApiPatchRequest(`tasks/${targetTask.id}/complete`, { completedAt });
+            const res = await api.makeApiPatchRequest(`tasks/${targetTask.id}`, {
+                ...targetTask,
+                ...patch,
+            });
             if (!res.ok) {
                 const message = res.body.error ? res.body.error.message : 'Error: Failed to update task';
                 showMessage({ message, type: 'danger' });

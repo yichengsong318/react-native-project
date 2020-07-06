@@ -8,7 +8,7 @@ import GoalPartners from '../components/GoalPartners';
 import { storeContext } from '../store'
 import * as appStyles from '../utils/styles';
 
-const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+const AnimatedIcon = Animated.createAnimatedComponent(Icon, { useNativeDriver: true });
 
 const GoalItem = ({ onPress, goal }) => {
     const store = useContext(storeContext);

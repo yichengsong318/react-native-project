@@ -9,7 +9,7 @@ const HeaderLogo = () => (
 
 const HeaderTitle = ({ title }) => (
     <View style={styles.HeaderCenter}>
-        {title ? <Text>{title}</Text> : <HeaderLogo/>}
+        {title ? <Text style={styles.title}>{title}</Text> : <HeaderLogo/>}
     </View>
 );
 
@@ -52,6 +52,11 @@ const styles = StyleSheet.create({
     },
     logo: {
         height: 30,
+    },
+    title: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 20,
     },
     headerLink: {
         flexDirection: 'row',

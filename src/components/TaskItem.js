@@ -6,20 +6,24 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { storeContext } from '../store'
 import * as appStyles from '../utils/styles';
 
-const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+const AnimatedIcon = Animated.createAnimatedComponent(Icon, { useNativeDriver: true });
 
-const TaskItem = ({ onPress, task }) => {
+const TaskItem = ({ navigation, task }) => {
     const store = useContext(storeContext);
     const swipeableTicket = useRef(null);
 
     const handleTaskCompletion = () => {
         if (task.completedAt) {
-            store.goalStore.setCompletedAtTask(task, null);
+            store.goalStore.updateTask(task, { completedAt: null });
         } else {
-            store.goalStore.setCompletedAtTask(task, new Date());
+            store.goalStore.updateTask(task, { completedAt: new Date() });
         }
 
         swipeableTicket.current.close();
+    }
+
+    const handleViewTask = () => {
+        navigation.navigate('TaskEdit', { task });
     }
 
     const deleteTask = () => {
@@ -93,9 +97,9 @@ const TaskItem = ({ onPress, task }) => {
             renderRightActions={renderRightActions}
             rightThreshold={60}
         >
-            <View style={styles.TaskItem}>
+            <TouchableOpacity style={styles.TaskItem} activeOpacity={1} onPress={handleViewTask}>
                 <Text style={[styles.name, task.completedAt ? styles.nameComplete : null]} numberOfLines={1}>{task.name}</Text>
-            </View>
+            </TouchableOpacity>
         </Swipeable>
     )
 };
