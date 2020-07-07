@@ -1,22 +1,30 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { observer } from "mobx-react-lite";
 import { storeContext } from '../../store';
-import AppScrollView from '../../components/AppScrollView';
+import RefreshableScrollView from '../../components/RefreshableScrollView';
 import Header from '../../components/Header';
 import AppInput from '../../components/AppInput';
 import InputDate from '../../components/InputDate';
+import CommentList from '../../components/CommentList';
+import CommentAddBar from '../../components/CommentAddBar';
 import * as appStyles from '../../utils/styles';
 
 const TaskEdit = observer(({ navigation }) => {
-    const { goalStore } = useContext(storeContext);
-    const task = navigation.getParam('task');
+    const { taskStore } = useContext(storeContext);
+    const task = taskStore.currentTask;
     const [name, setName] = useState(task.name ? task.name : null);
     const [dueDate, setDueDate] = useState(task.dueDate ? task.dueDate : null);
     const [description, setDescription] = useState(task.description ? task.description : null);
 
+    useEffect(() => {
+        setName(task.name);
+        setDueDate(task.dueDate);
+        setDescription(task.description);
+    }, [task]);
+
     const handleSaveTask = async () => {
-        await goalStore.updateTask(task, {
+        await taskStore.updateTask(task, {
             name,
             dueDate,
             description,
@@ -41,7 +49,7 @@ const TaskEdit = observer(({ navigation }) => {
                 }}
             />
 
-            <AppScrollView>
+            <RefreshableScrollView style={styles.main} onRefresh="fetchCurrentTask">
                 <View style={styles.formGroup}>
                     <Text style={styles.label}>Name</Text>
                     <AppInput
@@ -71,7 +79,18 @@ const TaskEdit = observer(({ navigation }) => {
                         textAlignVertical="top"
                     />
                 </View>
-            </AppScrollView>
+
+                <View style={styles.formGroup}>
+                    <Text style={styles.label}>Comments</Text>
+                    <CommentList task={task}/>
+                </View>
+
+                <View style={styles.scrollMargin}/>
+            </RefreshableScrollView>
+
+            <View style={styles.footer}>
+                <CommentAddBar/>
+            </View>
         </View>
     );
 });
@@ -79,6 +98,9 @@ const TaskEdit = observer(({ navigation }) => {
 const styles = StyleSheet.create({
     TaskEditScreen: {
         flex: 1,
+    },
+    main: {
+        marginBottom: 30,
     },
     formGroup: {
         marginTop: 15,
@@ -95,6 +117,16 @@ const styles = StyleSheet.create({
     textBox: {
         height: 100,
         maxHeight: 100,
+    },
+    scrollMargin: {
+        marginBottom: 20,
+    },
+    footer: {
+        flexDirection: 'row',
+        padding: appStyles.goals.gutter,
+        backgroundColor: appStyles.colors.bg00,
+        borderTopWidth: 1,
+        borderTopColor: appStyles.colors.divider,
     },
 });
 

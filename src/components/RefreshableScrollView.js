@@ -13,6 +13,9 @@ const RefreshableScrollView = (props) => {
         case 'fetchCurrentGoal':
             await store.goalStore.fetchCurrentGoal();
             break;
+        case 'fetchCurrentTask':
+            await store.taskStore.fetchCurrentTask();
+            break;
         default:
             await store.refresh();
         }

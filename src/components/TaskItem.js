@@ -10,20 +10,23 @@ const AnimatedIcon = Animated.createAnimatedComponent(Icon, { useNativeDriver: t
 
 const TaskItem = ({ navigation, task }) => {
     const store = useContext(storeContext);
-    const swipeableTicket = useRef(null);
+    const swipeableTask = useRef(null);
 
     const handleTaskCompletion = () => {
         if (task.completedAt) {
-            store.goalStore.updateTask(task, { completedAt: null });
+            store.taskStore.updateTask(task, { completedAt: null });
         } else {
-            store.goalStore.updateTask(task, { completedAt: new Date() });
+            store.taskStore.updateTask(task, { completedAt: new Date() });
         }
 
-        swipeableTicket.current.close();
+        swipeableTask.current.close();
     }
 
-    const handleViewTask = () => {
-        navigation.navigate('TaskEdit', { task });
+    const handleViewTask = async () => {
+        store.taskStore.setCurrentTask(task);
+        await store.taskStore.fetchCurrentTask();
+
+        navigation.navigate('TaskEdit');
     }
 
     const deleteTask = () => {
@@ -33,12 +36,12 @@ const TaskItem = ({ navigation, task }) => {
                 {
                     text: 'Cancel',
                     style: 'cancel',
-                    onPress: () => swipeableTicket.current.close(),
+                    onPress: () => swipeableTask.current.close(),
                 },
                 {
                     text: 'Delete',
                     style: 'destructive',
-                    onPress: () => store.goalStore.removeTask(task),
+                    onPress: () => store.taskStore.removeTask(task),
                 },
             ],
             { cancelable: false },
@@ -89,7 +92,7 @@ const TaskItem = ({ navigation, task }) => {
 
     return (
         <Swipeable
-            ref={swipeableTicket}
+            ref={swipeableTask}
             friction={3}
             renderLeftActions={renderLeftActions}
             leftThreshold={30}

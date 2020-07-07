@@ -12,6 +12,7 @@ import * as appStyles from '../../utils/styles';
 const GoalView = observer(({ navigation }) => {
     const store = useContext(storeContext);
     const goal = store.goalStore.currentGoal;
+    const tasks = store.taskStore.tasks;
 
     return (
         <View style={styles.GoalViewScreen}>
@@ -29,9 +30,9 @@ const GoalView = observer(({ navigation }) => {
             <View style={styles.main}>
                 <View style={styles.goalHeader}><Text>GoalHeader</Text></View>
                 <RefreshableScrollView style={styles.goalMain} onRefresh="fetchCurrentGoal">
-                    {store.goalStore.isFetchingCurrentGoal && !goal.tasks ?
+                    {store.goalStore.isFetchingCurrentGoal && !tasks ?
                         <Text>Loading...</Text> :
-                        <TaskList tasks={goal.tasks} navigation={navigation}/>
+                        <TaskList tasks={tasks} navigation={navigation}/>
                     }
                 </RefreshableScrollView>
             </View>

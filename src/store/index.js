@@ -5,6 +5,7 @@ import { showMessage } from 'react-native-flash-message';
 
 import { UserStore } from "./user";
 import { GoalStore } from "./goal";
+import { TaskStore } from "./task";
 
 class Store {
     @observable initialized = false;
@@ -13,12 +14,14 @@ class Store {
     constructor() {
         this.userStore = new UserStore(this);
         this.goalStore = new GoalStore(this);
+        this.taskStore = new TaskStore(this);
     }
 
     @action
     async init() {
         await this.userStore.load();
         await this.goalStore.load();
+        await this.taskStore.load();
 
         this.initialized = true;
         if (this.userStore.user) {

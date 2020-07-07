@@ -12,7 +12,7 @@ const AnimatedIcon = Animated.createAnimatedComponent(Icon, { useNativeDriver: t
 
 const GoalItem = ({ onPress, goal }) => {
     const store = useContext(storeContext);
-    const swipeableTicket = useRef(null);
+    const swipeableGoal = useRef(null);
 
     const deleteGoal = () => {
         Alert.alert(
@@ -21,7 +21,7 @@ const GoalItem = ({ onPress, goal }) => {
                 {
                     text: 'Cancel',
                     style: 'cancel',
-                    onPress: () => swipeableTicket.current.close(),
+                    onPress: () => swipeableGoal.current.close(),
                 },
                 {
                     text: 'Delete',
@@ -55,7 +55,7 @@ const GoalItem = ({ onPress, goal }) => {
 
     return (
         <Swipeable
-            ref={swipeableTicket}
+            ref={swipeableGoal}
             friction={3}
             rightThreshold={60}
             renderRightActions={renderRightActions}

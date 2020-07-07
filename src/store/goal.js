@@ -61,6 +61,9 @@ export class GoalStore {
 
             const currentIndex = this.goals.findIndex(goal => goal.id === this.currentGoalId);
             this.goals[currentIndex] = res.body;
+
+            this.rootStore.taskStore.setTasks(res.body.tasks);
+
             this.isFetchingCurrentGoal = false;
 
             await this.save();
@@ -88,79 +91,6 @@ export class GoalStore {
             return true;
         } catch (error) {
             showMessage({ message: 'NetworkError: Failed to delete goal', type: 'danger' });
-            return false;
-        }
-    }
-
-    @action
-    async createTask(task) {
-        try {
-            const res = await api.makeApiPostRequest('tasks', task);
-            if (!res.ok) {
-                const message = res.body.error ? res.body.error.message : 'Error: Failed to create task';
-                showMessage({ message, type: 'danger' });
-                return false;
-            }
-
-            showMessage({ message: 'Task has been created', type: 'success' });
-
-            this.currentGoal.tasks = [res.body, ...this.currentGoal.tasks]
-            this.save();
-
-            return true;
-        } catch (error) {
-            showMessage({ message: 'NetworkError: Failed to create task', type: 'danger' });
-            return false;
-        }
-    }
-
-    @action
-    async removeTask(targetTask) {
-        try {
-            const res = await api.makeApiDelRequest(`tasks/${targetTask.id}`);
-            if (!res.ok) {
-                const message = res.body.error ? res.body.error.message : 'Error: Failed to delete task';
-                showMessage({ message, type: 'danger' });
-                return false;
-            }
-
-            showMessage({ message: 'Task has been deleted', type: 'success' });
-
-            this.currentGoal.tasks = this.currentGoal.tasks.filter(task => task.id !== targetTask.id);
-            this.save();
-
-            return true;
-        } catch (error) {
-            showMessage({ message: 'NetworkError: Failed to delete task', type: 'danger' });
-            return false;
-        }
-    }
-
-    @action
-    async updateTask(targetTask, patch) {
-        try {
-            const res = await api.makeApiPatchRequest(`tasks/${targetTask.id}`, {
-                ...targetTask,
-                ...patch,
-            });
-            if (!res.ok) {
-                const message = res.body.error ? res.body.error.message : 'Error: Failed to update task';
-                showMessage({ message, type: 'danger' });
-                return false;
-            }
-
-            this.currentGoal.tasks = this.currentGoal.tasks.map((task) => {
-                if (task.id !== targetTask.id) return task;
-
-                return { ...task, ...res.body };
-            });
-
-            this.save();
-
-            return true;
-        } catch (error) {
-            console.log('error', error)
-            showMessage({ message: 'NetworkError: Failed to update task', type: 'danger' });
             return false;
         }
     }

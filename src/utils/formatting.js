@@ -14,7 +14,8 @@ export function formatDateTime(date) {
     return dateFns.format(toDate(date), 'MMM d, h:mm a');
 }
 
-export function humanizeTime(time, unitOfTime) {
-    const humanizedTime = `${time} ${unitOfTime}`;
-    return time === 1 ? humanizedTime : humanizedTime + 's';
+export function formatDateDistance(date) {
+    return dateFns.formatDistance(toDate(date), new Date(), {
+        addSuffix: true,
+    });
 }

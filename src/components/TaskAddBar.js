@@ -1,17 +1,17 @@
 import React, { useContext, useState, useRef } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { storeContext } from '../store';
 import AppInput from './AppInput';
 import * as appStyles from '../utils/styles';
 
 const TaskAddBar = () => {
-    const { goalStore, userStore } = useContext(storeContext);
+    const { goalStore, taskStore, userStore } = useContext(storeContext);
     const [name, setName] = useState(null);
     const nameInput = useRef(null);
 
     const handleCreateTask = async () => {
-        await goalStore.createTask({
+        await taskStore.createTask({
             name,
             goal: goalStore.currentGoal.id,
             user: userStore.user.id,
@@ -19,6 +19,7 @@ const TaskAddBar = () => {
 
         setName(null);
         nameInput.current.clear();
+        Keyboard.dismiss();
     };
 
     return (

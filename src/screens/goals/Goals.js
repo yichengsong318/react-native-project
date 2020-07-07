@@ -12,9 +12,9 @@ import * as appStyles from '../../utils/styles';
 const Goals = observer(({ navigation }) => {
     const store = useContext(storeContext);
 
-    const handleViewGoal = (goal) => {
+    const handleViewGoal = async (goal) => {
         store.goalStore.setCurrentGoal(goal);
-        store.goalStore.fetchCurrentGoal();
+        await store.goalStore.fetchCurrentGoal();
 
         navigation.navigate('GoalView');
     }
