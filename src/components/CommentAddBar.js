@@ -6,12 +6,16 @@ import * as appStyles from '../utils/styles';
 
 const CommentAddBar = () => {
     const { taskStore } = useContext(storeContext);
+    const [isPending, setIsPending] = useState(false);
     const [message, setMessage] = useState(null);
     const messageInput = useRef(null);
 
     const handleCreateComment = async () => {
+        setIsPending(true);
+
         await taskStore.createComment(message);
 
+        setIsPending(false);
         setMessage(null);
         messageInput.current.clear();
         Keyboard.dismiss();
@@ -26,7 +30,11 @@ const CommentAddBar = () => {
                 placeholder="write a comment..."
                 onSubmitEditing={handleCreateComment}
             />
-            <TouchableOpacity style={styles.button} onPress={handleCreateComment}>
+            <TouchableOpacity
+                style={[styles.button, isPending || !message ? styles.disabled : null]}
+                onPress={handleCreateComment}
+                disabled={isPending || !message}
+            >
                 <Text style={styles.buttonText}>Send</Text>
             </TouchableOpacity>
         </View>
@@ -56,6 +64,9 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#fff',
         fontWeight: 'bold',
+    },
+    disabled: {
+        backgroundColor: appStyles.colors.muted,
     },
 });
 

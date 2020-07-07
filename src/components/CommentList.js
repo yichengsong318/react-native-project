@@ -21,7 +21,9 @@ const CommentList = ({ task }) => {
                         }
                     </View>
                 ) :
-                <Text>No comments</Text>
+                <View style={styles.noComments}>
+                    <Text>No comments</Text>
+                </View>
             }
         </View>
     );
@@ -34,6 +36,9 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: appStyles.colors.divider,
+    },
+    noComments: {
+        padding: 15,
     },
 });
 

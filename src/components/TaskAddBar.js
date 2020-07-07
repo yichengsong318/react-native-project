@@ -7,16 +7,20 @@ import * as appStyles from '../utils/styles';
 
 const TaskAddBar = () => {
     const { goalStore, taskStore, userStore } = useContext(storeContext);
+    const [isPending, setIsPending] = useState(false);
     const [name, setName] = useState(null);
     const nameInput = useRef(null);
 
     const handleCreateTask = async () => {
+        setIsPending(true);
+
         await taskStore.createTask({
             name,
             goal: goalStore.currentGoal.id,
             user: userStore.user.id,
         });
 
+        setIsPending(false);
         setName(null);
         nameInput.current.clear();
         Keyboard.dismiss();
@@ -31,7 +35,11 @@ const TaskAddBar = () => {
                 placeholder="I want to..."
                 onSubmitEditing={handleCreateTask}
             />
-            <TouchableOpacity style={styles.button} onPress={handleCreateTask}>
+            <TouchableOpacity
+                style={[styles.button, isPending || !name ? styles.disabled : null]}
+                onPress={handleCreateTask}
+                disabled={isPending || !name}
+            >
                 <Icon name="plus" size={20} style={styles.buttonIcon}/>
             </TouchableOpacity>
         </View>
@@ -60,6 +68,9 @@ const styles = StyleSheet.create({
     },
     buttonIcon: {
         color: '#fff',
+    },
+    disabled: {
+        backgroundColor: appStyles.colors.muted,
     },
 });
 

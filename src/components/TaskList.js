@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { StyleSheet, View, Text } from "react-native";
 import TaskItem from './TaskItem';
+import * as appStyles from '../utils/styles';
 
 const TaskList = ({ navigation, tasks }) => {
     const sortedTasks = _.orderBy(tasks, [(task) => task.completedAt], ['desc']);
@@ -21,6 +22,8 @@ const TaskList = ({ navigation, tasks }) => {
 const styles = StyleSheet.create({
     TaskList: {
         flex: 1,
+        borderBottomWidth: 1,
+        borderBottomColor: appStyles.colors.divider,
     },
 });
 
