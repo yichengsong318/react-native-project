@@ -18,7 +18,15 @@ const GoalView = observer(({ navigation }) => {
         <View style={styles.GoalViewScreen}>
             <View style={styles.header}>
                 <View style={styles.headerTop}>
-                    <Text style={styles.headerGoalName}>{goal.name}</Text>
+                    <View style={styles.headerTopMain}>
+                        <TouchableOpacity
+                            style={styles.backButton}
+                            onPress={() => navigation.navigate('Goals')}
+                        >
+                            <Icon name="chevron-left" size={20} style={styles.backButtonIcon}/>
+                        </TouchableOpacity>
+                        <Text style={styles.headerGoalName} numberOfLines={1}>{goal.name}</Text>
+                    </View>
                     <TouchableOpacity style={styles.goalOptions}>
                         <Icon name="ellipsis-h" size={20} style={styles.goalOptionsIcon}/>
                     </TouchableOpacity>
@@ -56,11 +64,26 @@ const styles = StyleSheet.create({
     headerTop: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+    },
+    headerTopMain: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     headerGoalName: {
+        marginRight: 15,
+        flex: 1,
+        fontSize: 16,
         color: '#fff',
         fontWeight: 'bold',
+    },
+    backButton: {
+        marginRight: 15,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    backButtonIcon: {
+        color: '#fff',
     },
     headerBottom: {
         marginTop: 10,
