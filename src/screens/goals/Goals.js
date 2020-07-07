@@ -27,7 +27,7 @@ const Goals = observer(({ navigation }) => {
     const GoalTypeGroup = ({ type, goals }) => (
         <View>
             <SectionHeader title={type}/>
-            {store.goalStore.goals.map((goal) => (
+            {goals.map((goal) => (
                 <GoalItem onPress={() => handleViewGoal(goal)} key={goal.id} goal={goal}/>
             ))}
         </View>
