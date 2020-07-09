@@ -1,6 +1,5 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { NavigationActions, StackActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import { storeContext } from '../../store';
 import AppScrollView from '../../components/AppScrollView';
@@ -19,17 +18,22 @@ const Signup = ({ navigation }) => {
     const emailInput = useRef(null);
     const passwordInput = useRef(null);
 
+    useEffect(() => {
+        setIsPending(false);
+    });
+
     const handleSignup = async () => {
         setIsPending(true);
         const success = await store.userStore.signup(firstName, lastName, email, password);
         setIsPending(false);
         if (!success) return;
 
-        navigation.dispatch(StackActions.reset({
-            index: 0, key: null, actions: [
-                NavigationActions.navigate({ routeName: 'Home' }),
-            ],
-        }));
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'Goals' }],
+            }),
+        );
     }
 
     return (

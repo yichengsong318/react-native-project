@@ -1,8 +1,8 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, Linking, ActivityIndicator } from 'react-native';
-import { NavigationActions, StackActions } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import { storeContext } from '../../store';
+import { CommonActions } from '@react-navigation/native';
 import AppScrollView from '../../components/AppScrollView';
 import AppInput from '../../components/AppInput';
 import AppButton from '../../components/AppButton';
@@ -15,17 +15,22 @@ const Login = ({ navigation }) => {
     const [isPending, setIsPending] = useState(false);
     const passwordInput = useRef(null);
 
+    useEffect(() => {
+        setIsPending(false);
+    });
+
     const handleLogin = async () => {
         setIsPending(true);
         const success = await store.userStore.login(email, password);
         setIsPending(false);
         if (!success) return;
 
-        navigation.dispatch(StackActions.reset({
-            index: 0, key: null, actions: [
-                NavigationActions.navigate({ routeName: 'Home' }),
-            ],
-        }));
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'Goals' }],
+            }),
+        );
     }
 
     return (

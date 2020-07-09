@@ -1,14 +1,12 @@
 import React, { useContext } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import AsyncStorage from "@react-native-community/async-storage";
 import { storeContext } from '../store';
-import { NavigationActions } from 'react-navigation';
 
 const Settings = ({ navigation }) => {
     const store = useContext(storeContext);
     const { userStore } = store;
-
-    const user = userStore.user || {};
 
     const handleLogout = async () => {
         await userStore.logout();
@@ -18,7 +16,12 @@ const Settings = ({ navigation }) => {
         await AsyncStorage.clear();
         await store.init();
 
-        navigation.reset([NavigationActions.navigate({ routeName: 'Auth' })], 0);
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+            }),
+        );
     }
 
     return (
