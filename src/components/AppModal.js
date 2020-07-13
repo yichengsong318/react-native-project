@@ -1,102 +1,96 @@
-import React, { forwardRef, useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Modal, ScrollView, Dimensions } from "react-native";
+import React from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, Dimensions } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 import * as appStyles from '../utils/styles';
 
-const AppModal = forwardRef((props, ref) => {
-    const [modalVisible, setModalVisible] = useState(false);
+const AppModal = (props) => {
+    const navigation = useNavigation();
+    const title = props.title ? props.title : '';
 
-    // useEffect(() => {
-    //     console.log('props.visible', props.visible);
-    //     setModalVisible(props.visible);
-    // }, [props.visible]);
+    const handleConfirm = () => {
+        if (props.onConfirm) {
+            props.onConfirm();
+        }
 
-
-    // useEffect(() => {
-    //     // console.log('props.visible', props.visible)
-    //     // if (props.visible !== modalVisible) {
-    //     //     setModalVisible(!modalVisible);
-    //     //     console.log('modalVisible', modalVisible);
-    //     //   }
-
-    //     setModalVisible(true);
-    // }, [props.visible]);
-
-    const open = () => {
-        setModalVisible(true);
-    };
-
-
-    const submit = (value) => {
-        // setModalVisible(false);
-        // props.onChange(value);
-    };
-
-    const cancel = () => {
-        setModalVisible(false);
-        // setValues(initialValues);
-        // props.visible = false;
+        navigation.pop();
     };
 
     return (
-        <Modal ref={ref} animationType="fade" visible={modalVisible} transparent>
-            <View style={styles.modelOverlay}>
-                {/* Transparent button to close the modal when you click on the backdrop */}
-                <TouchableOpacity style={styles.modelOverlayAction} onPress={cancel}/>
+        <View style={styles.AppModal}>
+            <TouchableOpacity style={styles.overlay} onPress={() => navigation.pop()}/>
 
-                <View style={styles.modalContainer}>
-                    <ScrollView>
-                        {props.children}
-                    </ScrollView>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text style={styles.title}>{title}</Text>
+                </View>
 
-                    <View style={styles.modalActions}>
-                        <TouchableOpacity onPress={cancel}>
-                            <Text style={styles.modalBtn}>Cancel</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => submit(values)}>
-                            <Text style={[styles.modalBtn, styles.modalBtnPrimary]}>Save</Text>
-                        </TouchableOpacity>
-                    </View>
+                <View style={styles.main}>
+                    {props.children}
+                </View>
+
+                <View style={styles.actions}>
+                    <TouchableOpacity onPress={() => navigation.pop()}>
+                        <Text style={styles.button}>Cancel</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleConfirm} disabled={props.disabled}>
+                        <Text style={[styles.button, styles.buttonPrimary, props.disabled ? styles.disabled : null]}>Save</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
-        </Modal>
+        </View>
     );
-});
+};
 
 const styles = StyleSheet.create({
-    modelOverlay: {
+    AppModal: {
         flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#00000080',
+        justifyContent: 'center',
+        backgroundColor: 'transparent',
     },
-    modelOverlayAction: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
+    container: {
+        width: Dimensions.get('window').width - 20,
+        backgroundColor: appStyles.colors.bg00,
     },
-    modalContainer: {
-        width: Dimensions.get('screen').width * 0.80,
-        height: Dimensions.get('screen').height * 0.65,
-        backgroundColor: '#fff',
+    main: {
+        backgroundColor: appStyles.colors.bg00,
+        padding: 15,
     },
-    modalActions: {
+    actions: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
         borderTopWidth: 1,
         borderTopColor: appStyles.colors.divider,
+        backgroundColor: appStyles.colors.bg00,
     },
-    modalBtn: {
+    header: {
+        borderBottomWidth: 1,
+        borderBottomColor: appStyles.colors.divider,
+        padding: 15,
+    },
+    title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    button: {
         paddingVertical: 15,
         paddingHorizontal: 15,
         fontSize: 16,
     },
-    modalBtnPrimary: {
+    buttonPrimary: {
         color: appStyles.colors.linkDark,
         fontWeight: 'bold',
+    },
+    disabled: {
+        color: appStyles.colors.muted,
+    },
+    overlay: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
     },
 });
 

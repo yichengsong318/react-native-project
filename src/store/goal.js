@@ -74,6 +74,32 @@ export class GoalStore {
     }
 
     @action
+    async updateGoal(targetGoal, patch) {
+        try {
+            const res = await api.makeApiPatchRequest(`goals/${targetGoal.id}`, patch);
+            if (!res.ok) {
+                const message = res.body.error ? res.body.error.message : 'Error: Failed to update goal';
+                showMessage({ message, type: 'danger' });
+                return false;
+            }
+
+            this.goals = this.goals.map((goal) => {
+                if (goal.id !== targetGoal.id) return goal;
+
+                return { ...goal, ...res.body };
+            });
+
+            this.save();
+
+            return true;
+        } catch (error) {
+            console.log('error', error)
+            showMessage({ message: 'NetworkError: Failed to update goal', type: 'danger' });
+            return false;
+        }
+    }
+
+    @action
     async removeGoal(targetGoal) {
         try {
             const res = await api.makeApiDelRequest(`goals/${targetGoal.id}`);

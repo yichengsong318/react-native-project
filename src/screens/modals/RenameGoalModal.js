@@ -1,25 +1,39 @@
-import React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { storeContext } from '../../store';
+import AppModal from '../../components/AppModal';
+import AppInput from '../../components/AppInput';
 
 const RenameGoalModal = ({ navigation }) => {
-    return (
-        <View style={styles.RenameGoalModalScreen}>
-            <Text>RenameGoalModal</Text>
+    const { goalStore } = useContext(storeContext);
+    const goal = goalStore.currentGoal;
+    const [goalName, setGoalName] = useState(goal.name ? goal.name : '');
 
-            <Button
-                onPress={() => navigation.pop()}
-                title="Dismiss"
+    const handleUpdateGoalName = () => {
+        if (!goalName) return;
+
+        goalStore.updateGoal(goal, { name: goalName });
+    };
+
+    return (
+        <AppModal
+            style={styles.RenameGoalModalScreen}
+            title="Rename Goal"
+            onConfirm={handleUpdateGoalName}
+            disabled={!goalName}
+        >
+            <AppInput
+                value={goalName}
+                placeholder="Goal name"
+                onChangeText={setGoalName}
             />
-        </View>
+        </AppModal>
     );
 };
 
 const styles = StyleSheet.create({
     RenameGoalModalScreen: {
         flex: 1,
-        backgroundColor: 'transparent',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
 });
 
