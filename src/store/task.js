@@ -17,6 +17,11 @@ export class TaskStore {
         return this.tasks.find(task => task.id === this.currentTaskId);
     }
 
+    @computed
+    get incompleteTasks() {
+        return this.tasks.filter(task => !task.completedAt);
+    }
+
     @action
     setTasks(tasks) {
         this.tasks = tasks;

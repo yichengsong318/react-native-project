@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import { observer } from "mobx-react-lite";
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -14,6 +14,7 @@ const GoalView = observer(({ navigation }) => {
     const store = useContext(storeContext);
     const goal = store.goalStore.currentGoal;
     const tasks = store.taskStore.tasks;
+    const [showCompletedTasks, setShowCompletedTasks] = useState(true);
 
     const renameGoal = () => {
         navigation.navigate('Modal', { screen: 'RenameGoalModal' });
@@ -65,6 +66,9 @@ const GoalView = observer(({ navigation }) => {
                             <MenuOption onSelect={renameGoal}>
                                 <Text>Rename Goal</Text>
                             </MenuOption>
+                            <MenuOption onSelect={() => setShowCompletedTasks(!showCompletedTasks)}>
+                                <Text>{showCompletedTasks ? 'Hide' : 'Show'} Completed Tasks</Text>
+                            </MenuOption>
                             <MenuOption onSelect={deleteGoal}>
                                 <Text style={styles.danger}>Delete Goal</Text>
                             </MenuOption>
@@ -80,7 +84,7 @@ const GoalView = observer(({ navigation }) => {
                 <RefreshableScrollView style={styles.goalMain} onRefresh="fetchCurrentGoal">
                     {store.goalStore.isFetchingCurrentGoal && !tasks ?
                         <Text>Loading...</Text> :
-                        <TaskList tasks={tasks} navigation={navigation}/>
+                        <TaskList tasks={showCompletedTasks ? tasks : store.taskStore.incompleteTasks} navigation={navigation}/>
                     }
                 </RefreshableScrollView>
             </View>
