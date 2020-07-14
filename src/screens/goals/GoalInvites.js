@@ -12,12 +12,6 @@ import * as appStyles from '../../utils/styles';
 const GoalInvites = observer(({ navigation }) => {
     const { inviteStore } = useContext(storeContext);
 
-    const handleViewInvite = (invite) => {
-        store.inviteStore.setCurrentInvite(invite);
-
-        // navigation.navigate('GoalView');
-    };
-
     return (
         <View style={styles.GoalInvitesScreen}>
             <Header
@@ -32,7 +26,7 @@ const GoalInvites = observer(({ navigation }) => {
             <RefreshableScrollView>
                 <SectionHeader title="My Invites"/>
                 {inviteStore.currentGoalInvites.map((invite) => (
-                    <OutgoingInviteItem onPress={() => handleViewInvite(invite)} key={invite.id} invite={invite}/>
+                    <OutgoingInviteItem key={invite.id} invite={invite}/>
                 ))}
             </RefreshableScrollView>
 

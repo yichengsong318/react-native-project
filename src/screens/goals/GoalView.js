@@ -69,6 +69,11 @@ const GoalView = observer(({ navigation }) => {
                             </View>
                         </MenuTrigger>
                         <MenuOptions>
+                            {goal.goalStrive ? (
+                                <MenuOption onSelect={() => navigation.navigate('GoalPlan')}>
+                                    <Text>View STRIVE Plan</Text>
+                                </MenuOption>
+                            ) : null}
                             <MenuOption onSelect={renameGoal}>
                                 <Text>Rename Goal</Text>
                             </MenuOption>

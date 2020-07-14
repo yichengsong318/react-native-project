@@ -38,10 +38,6 @@ export class InviteStore {
                 const resGoalInvites = await api.makeApiGetRequest(`invites/goals/${this.rootStore.goalStore.currentGoalId}`);
                 if (!resGoalInvites.ok) return;
 
-                for (const invite of resGoalInvites.body) {
-                    invite.goal = this.rootStore.goalStore.currentGoal;
-                }
-
                 this.invites = [...this.invites, ...resGoalInvites.body];
             }
 
