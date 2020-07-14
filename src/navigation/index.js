@@ -10,8 +10,10 @@ import Login from '../screens/auth/Login';
 import Signup from '../screens/auth/Signup';
 import Goals from "../screens/goals/Goals";
 import GoalView from "../screens/goals/GoalView";
+import GoalInvites from "../screens/goals/GoalInvites";
 import TaskEdit from "../screens/goals/TaskEdit";
-import GoalInvite from "../screens/goals/GoalInvites";
+import Invites from "../screens/Invites";
+import Invitation from "../screens/Invitation";
 import RenameGoalModal from "../screens/modals/RenameGoalModal";
 import Settings from "../screens/Settings";
 import * as appStyles from '../utils/styles';
@@ -27,7 +29,7 @@ const createTabOptions = ({ route }, iconName) => {
     );
 
     const routeName = route.state ? route.state.routes[route.state.index].name : '';
-    const tabBarVisible = routeName && !/^Goals|GoalInvite|Settings$/.test(routeName) ? false : true;
+    const tabBarVisible = routeName && !/^Goals|^Invites|^Settings$/.test(routeName) ? false : true;
 
     return { tabBarIcon, tabBarVisible };
 };
@@ -53,19 +55,21 @@ const GoalStackScreen = () => (
     <GoalStack.Navigator screenOptions={{ headerShown: false }}>
         <GoalStack.Screen name="Goals" component={Goals}/>
         <GoalStack.Screen name="GoalView" component={GoalView}/>
+        <GoalStack.Screen name="GoalInvites" component={GoalInvites}/>
         <GoalStack.Screen name="TaskEdit" component={TaskEdit}/>
     </GoalStack.Navigator>
 );
 
 
 // ---------------------------------------------------------
-// GoalInvite
+// Invite
 
-const GoalInviteStack = createStackNavigator();
-const GoalInviteStackScreen = () => (
-    <GoalInviteStack.Navigator screenOptions={{ headerShown: false }}>
-        <GoalInviteStack.Screen name="GoalInvite" component={GoalInvite}/>
-    </GoalInviteStack.Navigator>
+const InviteStack = createStackNavigator();
+const InviteStackScreen = () => (
+    <InviteStack.Navigator screenOptions={{ headerShown: false }}>
+        <InviteStack.Screen name="Invites" component={Invites}/>
+        <InviteStack.Screen name="Invitation" component={Invitation}/>
+    </InviteStack.Navigator>
 );
 
 
@@ -81,7 +85,7 @@ const TabScreen = () => (
         }}
     >
         <Tab.Screen name="Goals" component={GoalStackScreen} options={(props) => createTabOptions(props, 'rocket')}/>
-        <Tab.Screen name="Invites" component={GoalInviteStackScreen} options={(props) => createTabOptions(props, 'envelope')}/>
+        <Tab.Screen name="Invites" component={InviteStackScreen} options={(props) => createTabOptions(props, 'envelope')}/>
         <Tab.Screen name="Settings" component={Settings} options={(props) => createTabOptions(props, 'cog')}/>
     </Tab.Navigator>
 );

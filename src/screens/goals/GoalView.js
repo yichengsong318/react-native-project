@@ -8,6 +8,7 @@ import RefreshableScrollView from '../../components/RefreshableScrollView';
 import GoalPartners from '../../components/GoalPartners';
 import TaskList from '../../components/TaskList';
 import TaskAddBar from '../../components/TaskAddBar';
+import AppButton from '../../components/AppButton';
 import * as appStyles from '../../utils/styles';
 
 const GoalView = observer(({ navigation }) => {
@@ -15,6 +16,11 @@ const GoalView = observer(({ navigation }) => {
     const goal = store.goalStore.currentGoal;
     const tasks = store.taskStore.tasks;
     const [showCompletedTasks, setShowCompletedTasks] = useState(true);
+
+    const handleViewInvites = async () => {
+        await store.inviteStore.refresh();
+        navigation.navigate('GoalInvites');
+    };
 
     const renameGoal = () => {
         navigation.navigate('Modal', { screen: 'RenameGoalModal' });
@@ -77,6 +83,13 @@ const GoalView = observer(({ navigation }) => {
                 </View>
                 <View style={styles.headerBottom}>
                     <GoalPartners goal={goal}/>
+                    <AppButton
+                        title="Invite"
+                        style={styles.inviteButton}
+                        color="#fff"
+                        outline
+                        onPress={handleViewInvites}
+                    />
                 </View>
             </View>
             <View style={styles.main}>
@@ -130,7 +143,13 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
     headerBottom: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
         marginTop: 10,
+    },
+    inviteButton: {
+        marginLeft: 10,
     },
     goalOptions: {
         borderWidth: 1,

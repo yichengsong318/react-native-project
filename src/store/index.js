@@ -6,6 +6,7 @@ import { showMessage } from 'react-native-flash-message';
 import { UserStore } from "./user";
 import { GoalStore } from "./goal";
 import { TaskStore } from "./task";
+import { InviteStore } from "./invite";
 
 class Store {
     @observable initialized = false;
@@ -15,6 +16,7 @@ class Store {
         this.userStore = new UserStore(this);
         this.goalStore = new GoalStore(this);
         this.taskStore = new TaskStore(this);
+        this.inviteStore = new InviteStore(this);
     }
 
     @action
@@ -22,6 +24,7 @@ class Store {
         await this.userStore.load();
         await this.goalStore.load();
         await this.taskStore.load();
+        await this.inviteStore.load();
 
         this.initialized = true;
         if (this.userStore.user) {
@@ -35,6 +38,7 @@ class Store {
         if (state.isInternetReachable) {
             await this.goalStore.refresh();
             await this.goalStore.fetchCurrentGoal();
+            await this.inviteStore.refresh();
         } else {
             showMessage({ message: 'Internet is unreachable, continue in offline mode.', type: 'none' });
         }

@@ -19,7 +19,6 @@ const GoalPartners = ({ goal }) => {
 
 const styles = StyleSheet.create({
     GoalPartners: {
-        flex: 1,
         flexDirection: 'row',
     },
     avatar: {
