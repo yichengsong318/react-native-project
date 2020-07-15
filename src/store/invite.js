@@ -54,6 +54,56 @@ export class InviteStore {
     }
 
     @action
+    async acceptInvite(targetInvite) {
+        try {
+            const res = await api.makeApiPostRequest('invite/accept', { token: targetInvite.token });
+            console.log('res', res);
+            if (!res.ok) {
+                const message = res.body.error ? res.body.error.message : 'Error: Failed to accept invite';
+                showMessage({ message, type: 'danger' });
+                return false;
+            }
+
+            showMessage({ message: 'Invite accepted', type: 'success' });
+
+
+            await this.rootStore.refresh();
+            this.rootStore.goalStore.setCurrentGoal(res.body.goal);
+
+            this.save();
+
+            return true;
+        } catch (error) {
+            showMessage({ message: 'NetworkError: Failed to accept invite', type: 'danger' });
+            return false;
+        }
+    }
+
+    @action
+    async declineInvite(targetInvite) {
+        try {
+            const res = await api.makeApiPostRequest('invite/decline', { token: targetInvite.token });
+            if (!res.ok) {
+                const message = res.body.error ? res.body.error.message : 'Error: Failed to decline invite';
+                showMessage({ message, type: 'danger' });
+                return false;
+            }
+
+            showMessage({ message: 'Invite declined', type: 'success' });
+
+            this.currentInviteId = null;
+            this.invites = this.invites.filter(invite => invite.id !== targetInvite.id);
+
+            this.save();
+
+            return true;
+        } catch (error) {
+            showMessage({ message: 'NetworkError: Failed to decline invite', type: 'danger' });
+            return false;
+        }
+    }
+
+    @action
     async save() {
         await AsyncStorage.setItem('@INVITE:invites', JSON.stringify(this.invites))
             .catch(error => console.log('ERROR:', error));

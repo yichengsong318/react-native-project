@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { observer } from "mobx-react-lite";
 import { storeContext } from '../store';
@@ -12,6 +12,18 @@ const Invitation = observer(({ navigation }) => {
     const { inviteStore } = useContext(storeContext);
     const invite = inviteStore.currentInvite;
 
+    const handleAcceptInvite = async () => {
+        await inviteStore.acceptInvite(invite);
+
+        navigation.navigate('GoalView');
+    };
+
+    const handleDeclineInvite = async () => {
+        await inviteStore.declineInvite(invite);
+
+        navigation.navigate('Invites');
+    };
+
     return (
         <View style={styles.InvitationScreen}>
             <Header
@@ -23,30 +35,43 @@ const Invitation = observer(({ navigation }) => {
                 }}
             />
 
-            <AppScrollView style={styles.main}>
-                {invite.status !== 'pending' ? (
-                    <View style={styles.content}>
-                        <Text style={styles.heading}>You've already {invite.status} this invitation</Text>
-                    </View>) :
-                invite.goal.goalStrive ? (
-                    <View style={styles.content}>
-                        <Text style={styles.heading}>{invite.goal.user.firstName} {invite.goal.user.lastName} wishes you can be their Accountability Partner.</Text>
+            { invite ? (
+                <AppScrollView style={styles.main}>
+                    {invite.status !== 'pending' ? (
+                        <View style={styles.content}>
+                            <Text style={styles.heading}>You've already {invite.status} this invitation</Text>
+                        </View>) :
+                    invite.goal.goalStrive ? (
+                        <View style={styles.content}>
+                            <Text style={styles.heading}>{invite.goal.user.firstName} {invite.goal.user.lastName} wishes you can be their Accountability Partner.</Text>
 
-                        <StriveGoalPlan goal={invite.goal}/>
-                    </View>
-                ) : (
-                    <View style={styles.content}>
-                        <Text style={styles.heading}>{invite.goal.user.firstName} {invite.goal.user.lastName} would like to share their Goal with you.</Text>
+                            <StriveGoalPlan goal={invite.goal}/>
+                        </View>
+                    ) : (
+                        <View style={styles.content}>
+                            <Text style={styles.heading}>{invite.goal.user.firstName} {invite.goal.user.lastName} would like to share their Goal with you.</Text>
 
-                        <Text style={styles.subHeading}>Goal Name:</Text>
-                        <Text style={styles.description}>{invite.goal.name}</Text>
-                    </View>
-                )}
-            </AppScrollView>
+                            <Text style={styles.subHeading}>Goal Name:</Text>
+                            <Text style={styles.description}>{invite.goal.name}</Text>
+                        </View>
+                    )}
+                </AppScrollView>
+            ) : null}
 
             <View style={styles.footer}>
-                <AppButton style={styles.button} title="Accept" color={appStyles.colors.success}/>
-                <AppButton style={styles.button} title="Decline" color={appStyles.colors.danger} outline/>
+                <AppButton
+                    style={styles.button}
+                    title="Accept"
+                    color={appStyles.colors.success}
+                    onPress={handleAcceptInvite}
+                />
+                <AppButton
+                    style={styles.button}
+                    title="Decline"
+                    color={appStyles.colors.danger}
+                    outline
+                    onPress={handleDeclineInvite}
+                />
             </View>
         </View>
     );

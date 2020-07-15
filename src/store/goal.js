@@ -85,7 +85,6 @@ export class GoalStore {
 
             this.goals = this.goals.map((goal) => {
                 if (goal.id !== targetGoal.id) return goal;
-
                 return { ...goal, ...res.body };
             });
 

@@ -1,5 +1,4 @@
-import _ from 'lodash';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { observer } from "mobx-react-lite";
 import { storeContext } from '../store';
