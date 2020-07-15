@@ -104,6 +104,29 @@ export class InviteStore {
     }
 
     @action
+    async cancelInvite(targetInvite) {
+        try {
+            const res = await api.makeApiDelRequest(`invites/${targetInvite.id}`);
+            if (!res.ok) {
+                const message = res.body.error ? res.body.error.message : 'Error: Failed to cancel invite';
+                showMessage({ message, type: 'danger' });
+                return false;
+            }
+
+            showMessage({ message: 'Invite canceled', type: 'success' });
+
+            this.invites = this.invites.filter(invite => invite.id !== targetInvite.id);
+
+            this.save();
+
+            return true;
+        } catch (error) {
+            showMessage({ message: 'NetworkError: Failed to cancel invite', type: 'danger' });
+            return false;
+        }
+    }
+
+    @action
     async save() {
         await AsyncStorage.setItem('@INVITE:invites', JSON.stringify(this.invites))
             .catch(error => console.log('ERROR:', error));
