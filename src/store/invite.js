@@ -127,6 +127,27 @@ export class InviteStore {
     }
 
     @action
+    async createInvite(goal, email) {
+        try {
+            const res = await api.makeApiPostRequest(`invites/goals/${goal.id}`, { email });
+            if (!res.ok) {
+                const message = res.body.error ? res.body.error.message : 'Error: Failed to send invite';
+                showMessage({ message, type: 'danger' });
+                return false;
+            }
+
+            showMessage({ message: 'Invite sent!', type: 'success' });
+
+            this.refresh();
+
+            return true;
+        } catch (error) {
+            showMessage({ message: 'NetworkError: Failed to send invite', type: 'danger' });
+            return false;
+        }
+    }
+
+    @action
     async save() {
         await AsyncStorage.setItem('@INVITE:invites', JSON.stringify(this.invites))
             .catch(error => console.log('ERROR:', error));
