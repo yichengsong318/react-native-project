@@ -1,6 +1,7 @@
 export const colors = {
     primary: '#342eae',
     secondary: '#1acf72',
+    vividPrimary: '#9421ff',
     linkLight: '#127bfd',
     linkDark: '#037afe',
     divider: '#d5d5d5',
@@ -10,6 +11,15 @@ export const colors = {
     danger: '#e74c3c',
     success: '#2ecc71',
     muted: '#8492a6',
+};
+
+export const goalThemes = {
+    strive2goal: [colors.primary, colors.secondary],
+    sunset: ['#f68724', '#ed2f5b'],
+    ocean: ['#169bff', '#38F5D3'],
+    bloom: ['#9F76FC', '#FE6D92'],
+    solar: ['#ff7e22', '#fff205'],
+    lime: ['#ffed12', '#00c15'],
 };
 
 export const general = {

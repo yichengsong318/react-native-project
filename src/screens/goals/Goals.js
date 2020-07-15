@@ -37,9 +37,8 @@ const Goals = observer(({ navigation }) => {
         <View style={styles.GoalsScreen}>
             <Header
                 right={{
-                    title: 'Add',
+                    title: 'Create',
                     icon: 'plus',
-                    color: appStyles.colors.linkLight,
                     onPress: () => navigation.navigate('GoalTypeSelection'),
                 }}
             />

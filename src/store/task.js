@@ -11,6 +11,7 @@ export class TaskStore {
     @observable tasks = [];
     @observable currentTaskId;
     @observable isFetchingCurrentTask = false;
+    @observable showCompletedTasks = true;
 
     @computed
     get currentTask() {
@@ -25,6 +26,11 @@ export class TaskStore {
     @action
     setTasks(tasks) {
         this.tasks = tasks;
+    }
+
+    @action
+    setShowCompletedTasks(value) {
+        this.showCompletedTasks = value;
     }
 
     @action

@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, SafeAreaView, View, Text, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import LinearGradient from 'react-native-linear-gradient';
 import { colors } from '../utils/styles';
 
 const HeaderLogo = () => (
@@ -24,12 +25,15 @@ const HeaderLink = ({ left, right, icon, color, title, onPress }) => {
 )};
 
 const Header = ({ title, left, right }) => (
-    <SafeAreaView style={{ backgroundColor: colors.primary }}>
-        <View style={styles.Header}>
+    <SafeAreaView>
+        <LinearGradient
+            colors={[colors.primary, colors.vividPrimary]}
+            style={styles.Header}
+        >
             <HeaderTitle title={title} />
             {left ? <HeaderLink left {...left} /> : <View />}
             {right ? <HeaderLink right {...right} /> : <View />}
-        </View>
+        </LinearGradient>
     </SafeAreaView>
 );
 
