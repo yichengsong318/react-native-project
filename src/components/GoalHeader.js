@@ -76,8 +76,8 @@ const GoalHeader = ({ goal }) => {
                         <MenuOption onSelect={renameGoal}>
                             <Text>Rename Goal</Text>
                         </MenuOption>
-                        <MenuOption onSelect={() => setShowCompletedTasks(!showCompletedTasks)}>
-                            <Text>{showCompletedTasks ? 'Hide' : 'Show'} Completed Tasks</Text>
+                        <MenuOption onSelect={() => store.taskStore.setShowCompletedTasks(!store.taskStore.showCompletedTasks)}>
+                            <Text>{store.taskStore.showCompletedTasks ? 'Hide' : 'Show'} Completed Tasks</Text>
                         </MenuOption>
                         <MenuOption onSelect={deleteGoal}>
                             <Text style={styles.danger}>Delete Goal</Text>
