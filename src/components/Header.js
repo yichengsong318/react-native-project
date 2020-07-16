@@ -14,15 +14,19 @@ const HeaderTitle = ({ title }) => (
     </View>
 );
 
-const HeaderLink = ({ left, right, icon, color, title, onPress }) => {
+const HeaderLink = ({ left, right, icon, color, title, onPress, disabled }) => {
     const linkColor = color ? {color} : {color: '#fff'};
 
-    return (<TouchableOpacity style={styles.headerLink} onPress={onPress}>
-        {icon && left ? <Icon name={icon} size={20} style={linkColor}/> : <View/>}
-        {title ? <Text style={[styles.headerLinkText, linkColor]}>{title}</Text> : <View/>}
-        {icon && right ? <Icon name={icon} size={20} style={linkColor}/> : <View/>}
-    </TouchableOpacity>
-)};
+    return (
+        <TouchableOpacity onPress={onPress} disabled={disabled}>
+            <View style={[styles.headerLinkInner, disabled ? { opacity: 0.4 } : null]}>
+                {icon && left ? <Icon name={icon} size={20} style={linkColor}/> : <View/>}
+                {title ? <Text style={[styles.headerLinkText, linkColor]}>{title}</Text> : <View/>}
+                {icon && right ? <Icon name={icon} size={20} style={linkColor}/> : <View/>}
+            </View>
+        </TouchableOpacity>
+    );
+};
 
 const Header = ({ title, left, right }) => (
     <SafeAreaView>
@@ -62,7 +66,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 20,
     },
-    headerLink: {
+    headerLinkInner: {
         flexDirection: 'row',
     },
     headerLinkText: {

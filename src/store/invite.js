@@ -57,7 +57,6 @@ export class InviteStore {
     async acceptInvite(targetInvite) {
         try {
             const res = await api.makeApiPostRequest('invite/accept', { token: targetInvite.token });
-            console.log('res', res);
             if (!res.ok) {
                 const message = res.body.error ? res.body.error.message : 'Error: Failed to accept invite';
                 showMessage({ message, type: 'danger' });

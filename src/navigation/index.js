@@ -11,6 +11,7 @@ import Signup from '../screens/auth/Signup';
 import Goals from "../screens/goals/Goals";
 import GoalView from "../screens/goals/GoalView";
 import GoalInvites from "../screens/goals/GoalInvites";
+import GoalTypeSelection from "../screens/goals/GoalTypeSelection";
 import GoalPlan from "../screens/goals/GoalPlan";
 import TaskEdit from "../screens/goals/TaskEdit";
 import Invites from "../screens/Invites";
@@ -58,6 +59,7 @@ const GoalStackScreen = () => (
         <GoalStack.Screen name="GoalView" component={GoalView}/>
         <GoalStack.Screen name="GoalInvites" component={GoalInvites}/>
         <GoalStack.Screen name="GoalPlan" component={GoalPlan}/>
+        <GoalStack.Screen name="GoalTypeSelection" component={GoalTypeSelection}/>
         <GoalStack.Screen name="TaskEdit" component={TaskEdit}/>
     </GoalStack.Navigator>
 );

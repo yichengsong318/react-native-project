@@ -74,6 +74,28 @@ export class GoalStore {
     }
 
     @action
+    async createGoal(goal) {
+        try {
+            const res = await api.makeApiPostRequest('goals', goal);
+            if (!res.ok) {
+                const message = res.body.error ? res.body.error.message : 'Error: Failed to create goal';
+                showMessage({ message, type: 'danger' });
+                return false;
+            }
+
+            this.goals = [...this.goals, res.body];
+            this.setCurrentGoal(res.body);
+
+            this.save();
+            return true;
+        } catch (error) {
+            console.log('error', error)
+            showMessage({ message: 'NetworkError: Failed to create goal', type: 'danger' });
+            return false;
+        }
+    }
+
+    @action
     async updateGoal(targetGoal, patch) {
         try {
             const res = await api.makeApiPatchRequest(`goals/${targetGoal.id}`, patch);
@@ -89,7 +111,6 @@ export class GoalStore {
             });
 
             this.save();
-
             return true;
         } catch (error) {
             console.log('error', error)
@@ -111,8 +132,8 @@ export class GoalStore {
             showMessage({ message: 'Goal has been deleted', type: 'success' });
 
             this.goals = this.goals.filter(goal => goal.id !== targetGoal.id);
-            this.save();
 
+            this.save();
             return true;
         } catch (error) {
             showMessage({ message: 'NetworkError: Failed to delete goal', type: 'danger' });

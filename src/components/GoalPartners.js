@@ -5,14 +5,16 @@ import UserAvatar from './UserAvatar';
 const GoalPartners = ({ goal }) => {
     return (
         <View style={styles.GoalPartners}>
-            {goal.partners.map((partner) => (
-                partner.user ?
-                    <UserAvatar
-                        key={partner.id}
-                        user={partner.user}
-                        style={styles.avatar}
-                    /> : null
-            ))}
+            {goal.partners ?
+                goal.partners.map((partner) => (
+                    partner.user ?
+                        <UserAvatar
+                            key={partner.id}
+                            user={partner.user}
+                            style={styles.avatar}
+                        /> : null
+                )) : null
+            }
         </View>
     );
 };
