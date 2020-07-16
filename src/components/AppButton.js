@@ -11,6 +11,9 @@ const AppButton = (props) => {
     if (props.outline) {
         buttonStyles = { ...styles.outline, borderColor: color };
         textStyles = { color };
+    } else if (props.link) {
+        buttonStyles = { border: 'none' };
+        textStyles = { color };
     } else {
         buttonStyles = { backgroundColor: color, borderColor: 'transparent' };
         textStyles = { color: '#fff' };

@@ -2,7 +2,9 @@ import React from 'react';
 import { StyleSheet, View, Text } from "react-native";
 import * as appStyles from '../utils/styles';
 
-const StriveAcronym = ({ activeIndex }) => {
+const StriveAcronym = ({ activeIndex, activeColor }) => {
+    const activeStyles = activeColor ? { color: activeColor } : { color: appStyles.colors.primary };
+
     const striveAcronym = [
         {
             letter: 's',
@@ -42,7 +44,7 @@ const StriveAcronym = ({ activeIndex }) => {
                 {striveAcronym.map((acronym, index) => (
                     <Text
                         key={index}
-                        style={[styles.letter, index === activeIndex ? styles.active : null]}
+                        style={[styles.letter, index === activeIndex ? activeStyles : null]}
                     >
                         {acronym.letter}
                     </Text>
@@ -52,7 +54,7 @@ const StriveAcronym = ({ activeIndex }) => {
             {striveAcronym.map((acronym, index) => {
                 return index === activeIndex ? (
                     <View key={index} style={styles.definition}>
-                        <Text style={styles.definitionName}>
+                        <Text style={[styles.definitionName, activeStyles]}>
                             {acronym.name} - <Text style={styles.definitionDesc}>{acronym.definition}</Text>
                         </Text>
                     </View>
@@ -75,9 +77,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 32,
         color: appStyles.colors.muted,
-    },
-    active: {
-        color: appStyles.colors.primary,
     },
     definition: {
         // ...
