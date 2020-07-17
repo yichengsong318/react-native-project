@@ -16,7 +16,7 @@ const Goals = observer(({ navigation }) => {
         store.goalStore.setCurrentGoal(goal);
         await store.goalStore.fetchCurrentGoal();
 
-        if (store.goalStore.currentGoal.goalStrive.inSetup) {
+        if (store.goalStore.currentGoal.goalStrive && store.goalStore.currentGoal.goalStrive.inSetup) {
             navigation.navigate('GoalStriveSetup');
             return;
         }

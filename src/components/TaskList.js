@@ -22,8 +22,6 @@ const TaskList = ({ navigation, tasks }) => {
 const styles = StyleSheet.create({
     TaskList: {
         flex: 1,
-        borderBottomWidth: 1,
-        borderBottomColor: appStyles.colors.divider,
     },
 });
 

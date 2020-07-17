@@ -6,7 +6,9 @@ import RefreshableScrollView from '../../components/RefreshableScrollView';
 import GoalHeader from '../../components/GoalHeader';
 import TaskList from '../../components/TaskList';
 import TaskAddBar from '../../components/TaskAddBar';
+import StriveProgressBar from '../../components/StriveProgressBar';
 import * as appStyles from '../../utils/styles';
+import AppButton from '../../components/AppButton';
 
 const GoalView = observer(({ navigation }) => {
     const store = useContext(storeContext);
@@ -18,7 +20,17 @@ const GoalView = observer(({ navigation }) => {
             <GoalHeader goal={goal}/>
 
             <View style={styles.main}>
-                <View style={styles.goalHeader}><Text>GoalHeader</Text></View>
+                <View style={styles.taskHeader}>
+                    {goal.goalStrive && goal.goalStrive.startedAt ? (
+                        <View style={styles.progressBarContainer}>
+                            <StriveProgressBar goal={goal} showDates/>
+                        </View>
+                    ) : (
+                        <AppButton color={appStyles.colors.success} title="Start Goal"/>
+                    )}
+                    <Text style={styles.taskHeaderTitle}>My Tasks</Text>
+                </View>
+
                 <RefreshableScrollView style={styles.goalMain} onRefresh="fetchCurrentGoal">
                     {store.goalStore.isFetchingCurrentGoal && !tasks ?
                         <Text>Loading...</Text> :
@@ -47,8 +59,15 @@ const styles = StyleSheet.create({
         borderTopRightRadius: appStyles.general.borderRadius,
         backgroundColor: appStyles.colors.bg00,
     },
-    goalHeader: {
+    taskHeader: {
+        borderBottomWidth: 1,
+        borderBottomColor: appStyles.colors.divider,
         padding: appStyles.goals.gutter,
+    },
+    taskHeaderTitle: {
+        marginTop: 10,
+        fontWeight: 'bold',
+        fontSize: 18,
     },
     footer: {
         flexDirection: 'row',
@@ -57,6 +76,10 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderTopColor: appStyles.colors.divider,
     },
+    progressBarContainer: {
+        width: 200,
+        marginBottom: 10,
+    }
 });
 
 export default GoalView;

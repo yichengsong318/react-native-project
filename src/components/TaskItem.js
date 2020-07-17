@@ -109,8 +109,8 @@ const TaskItem = ({ navigation, task }) => {
 
 const styles = StyleSheet.create({
     TaskItem: {
-        borderTopWidth: 1,
-        borderTopColor: appStyles.colors.divider,
+        borderBottomWidth: 1,
+        borderBottomColor: appStyles.colors.divider,
         paddingVertical: 15,
         paddingHorizontal: 15,
         backgroundColor: appStyles.colors.bg00,
