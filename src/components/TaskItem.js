@@ -103,7 +103,7 @@ const TaskItem = ({ navigation, task }) => {
             <TouchableOpacity style={styles.TaskItem} activeOpacity={1} onPress={handleViewTask}>
                 <Text style={[styles.name, task.completedAt ? styles.nameComplete : null]} numberOfLines={1}>{task.name}</Text>
                 <View style={styles.labelList}>
-                    {task.labels.map((label) => (
+                    {task.labels && task.labels.map((label) => (
                         <View
                             key={label}
                             style={[styles.label, { backgroundColor: appStyles.labelColors[label]}]}
