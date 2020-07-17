@@ -22,6 +22,16 @@ export const goalThemes = {
     lime: ['#ffed12', '#00c15'],
 };
 
+export const labelColors = {
+    red: '#e74c3c',
+    orange: '#ff7f00',
+    yellow: '#f1c40f',
+    green: '#2ecc71',
+    blue: '#127bfd',
+    purple: '#a800ff',
+    pink: '#fd6187',
+};
+
 export const general = {
     borderRadius: 10,
 };

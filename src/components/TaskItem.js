@@ -102,6 +102,14 @@ const TaskItem = ({ navigation, task }) => {
         >
             <TouchableOpacity style={styles.TaskItem} activeOpacity={1} onPress={handleViewTask}>
                 <Text style={[styles.name, task.completedAt ? styles.nameComplete : null]} numberOfLines={1}>{task.name}</Text>
+                <View style={styles.labelList}>
+                    {task.labels.map((label) => (
+                        <View
+                            key={label}
+                            style={[styles.label, { backgroundColor: appStyles.labelColors[label]}]}
+                        />
+                    ))}
+                </View>
             </TouchableOpacity>
         </Swipeable>
     )
@@ -141,6 +149,17 @@ const styles = StyleSheet.create({
         backgroundColor: appStyles.colors.danger,
         paddingHorizontal: 30,
         justifyContent: 'center',
+    },
+    labelList: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 5,
+    },
+    label: {
+        width: 30,
+        height: 6,
+        borderRadius: 6,
+        marginRight: 5,
     },
 });
 
