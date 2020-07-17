@@ -6,6 +6,7 @@ import { storeContext } from '../../store';
 import RefreshableScrollView from '../../components/RefreshableScrollView';
 import Header from '../../components/Header';
 import AppInput from '../../components/AppInput';
+import InputTextarea from '../../components/InputTextarea';
 import InputDate from '../../components/InputDate';
 import CommentList from '../../components/CommentList';
 import CommentAddBar from '../../components/CommentAddBar';
@@ -72,13 +73,11 @@ const TaskEdit = observer(({ navigation }) => {
                 </View>
                 <View style={styles.formGroup}>
                     <Text style={styles.formLabel}>Description</Text>
-                    <AppInput
+                    <InputTextarea
                         value={description}
                         placeholder="Write description..."
                         onChangeText={setDescription}
-                        style={[styles.input, styles.textBox]}
-                        multiline={true}
-                        textAlignVertical="top"
+                        style={styles.input}
                     />
                 </View>
 
@@ -86,7 +85,7 @@ const TaskEdit = observer(({ navigation }) => {
                     <Text style={styles.formLabel}>Labels</Text>
 
                     <View style={styles.formContent}>
-                        {task.labels.length ? (
+                        {task.labels && task.labels.length ? (
                             <View style={styles.labelList}>
                                 {task.labels.map((label) => (
                                     <View
@@ -146,10 +145,6 @@ const styles = StyleSheet.create({
     },
     input: {
         borderRadius: 0,
-    },
-    textBox: {
-        height: 100,
-        maxHeight: 100,
     },
     scrollMargin: {
         marginBottom: 20,
