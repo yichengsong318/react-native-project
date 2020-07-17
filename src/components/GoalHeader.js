@@ -12,7 +12,6 @@ import * as appStyles from '../utils/styles';
 const GoalHeader = ({ goal }) => {
     const navigation = useNavigation();
     const store = useContext(storeContext);
-    const [showCompletedTasks, setShowCompletedTasks] = useState(true);
 
     const handleViewInvites = async () => {
         await store.inviteStore.refresh();
