@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { observer } from "mobx-react-lite";
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { storeContext } from '../../store';
 import RefreshableScrollView from '../../components/RefreshableScrollView';
 import Header from '../../components/Header';
@@ -9,6 +10,7 @@ import InputDate from '../../components/InputDate';
 import CommentList from '../../components/CommentList';
 import CommentAddBar from '../../components/CommentAddBar';
 import * as appStyles from '../../utils/styles';
+import AppButton from '../../components/AppButton';
 
 const TaskEdit = observer(({ navigation }) => {
     const { taskStore } = useContext(storeContext);
@@ -51,7 +53,7 @@ const TaskEdit = observer(({ navigation }) => {
 
             <RefreshableScrollView style={styles.main} onRefresh="fetchCurrentTask">
                 <View style={styles.formGroup}>
-                    <Text style={styles.label}>Name</Text>
+                    <Text style={styles.formLabel}>Name</Text>
                     <AppInput
                         value={name}
                         onChangeText={setName}
@@ -60,7 +62,7 @@ const TaskEdit = observer(({ navigation }) => {
                     />
                 </View>
                 <View style={styles.formGroup}>
-                    <Text style={styles.label}>Due date</Text>
+                    <Text style={styles.formLabel}>Due date</Text>
                     <InputDate
                         value={dueDate}
                         placeholder="Set due date..."
@@ -69,7 +71,7 @@ const TaskEdit = observer(({ navigation }) => {
                     />
                 </View>
                 <View style={styles.formGroup}>
-                    <Text style={styles.label}>Description</Text>
+                    <Text style={styles.formLabel}>Description</Text>
                     <AppInput
                         value={description}
                         placeholder="Write description..."
@@ -81,7 +83,31 @@ const TaskEdit = observer(({ navigation }) => {
                 </View>
 
                 <View style={styles.formGroup}>
-                    <Text style={styles.label}>Comments</Text>
+                    <Text style={styles.formLabel}>Labels</Text>
+
+                    <View style={styles.formContent}>
+                        {task.labels.length ? (
+                            <View style={styles.labelList}>
+                                {task.labels.map((label) => (
+                                    <View
+                                        key={label}
+                                        style={[styles.label, { backgroundColor: appStyles.labelColors[label]}]}
+                                    />
+                                ))}
+                                <TouchableOpacity onPress={() => {}}>
+                                    <Icon name="plus" size={14} style={styles.addLabelIcon}/>
+                                </TouchableOpacity>
+                            </View>
+                        ) : (
+                            <View>
+                                <AppButton title="Add label" link/>
+                            </View>
+                        )}
+                    </View>
+                </View>
+
+                <View style={styles.formGroup}>
+                    <Text style={styles.formLabel}>Comments</Text>
                     <CommentList task={task}/>
                 </View>
 
@@ -105,11 +131,18 @@ const styles = StyleSheet.create({
     formGroup: {
         marginTop: 15,
     },
-    label: {
+    formLabel: {
         marginHorizontal: 15,
         marginBottom: 3,
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    formContent: {
+        padding: 15,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: appStyles.colors.divider,
+        backgroundColor: appStyles.colors.bg00,
     },
     input: {
         borderRadius: 0,
@@ -127,6 +160,20 @@ const styles = StyleSheet.create({
         backgroundColor: appStyles.colors.bg00,
         borderTopWidth: 1,
         borderTopColor: appStyles.colors.divider,
+    },
+    labelList: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    label: {
+        width: 50,
+        height: 20,
+        borderRadius: 20,
+        marginRight: 5,
+    },
+    addLabelIcon: {
+        marginLeft: 5,
+        color: appStyles.colors.muted,
     },
 });
 
