@@ -17,7 +17,7 @@ const RenameGoalModal = ({ navigation }) => {
 
     return (
         <AppModal
-            style={styles.RenameGoalModalScreen}
+            style={styles.RenameGoalModal}
             title="Rename Goal"
             onConfirm={handleUpdateGoalName}
             disabled={!goalName}
@@ -32,7 +32,7 @@ const RenameGoalModal = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    RenameGoalModalScreen: {
+    RenameGoalModal: {
         flex: 1,
     },
 });

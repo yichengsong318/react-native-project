@@ -36,6 +36,10 @@ const TaskEdit = observer(({ navigation }) => {
         navigation.navigate('GoalView');
     };
 
+    const openLabelsModal = () => {
+        navigation.navigate('Modal', { screen: 'TaskLabelsModal' });
+    };
+
     return (
         <View style={styles.TaskEditScreen}>
             <Header
@@ -88,18 +92,19 @@ const TaskEdit = observer(({ navigation }) => {
                         {task.labels && task.labels.length ? (
                             <View style={styles.labelList}>
                                 {task.labels.map((label) => (
-                                    <View
+                                    <TouchableOpacity
                                         key={label}
                                         style={[styles.label, { backgroundColor: appStyles.labelColors[label]}]}
+                                        onPress={openLabelsModal}
                                     />
                                 ))}
-                                <TouchableOpacity onPress={() => {}}>
-                                    <Icon name="plus" size={14} style={styles.addLabelIcon}/>
+                                <TouchableOpacity onPress={openLabelsModal}>
+                                    <Icon name="plus" size={16} style={styles.addLabelIcon}/>
                                 </TouchableOpacity>
                             </View>
                         ) : (
                             <View>
-                                <AppButton title="Add label" link/>
+                                <AppButton title="Add label" link onPress={openLabelsModal}/>
                             </View>
                         )}
                     </View>

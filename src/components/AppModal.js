@@ -6,6 +6,9 @@ import * as appStyles from '../utils/styles';
 const AppModal = (props) => {
     const navigation = useNavigation();
     const title = props.title ? props.title : '';
+    const confirmText = props.confirmText ? props.confirmText : 'Save';
+    const cancelText = props.cancelText ? props.cancelText : 'Cancel';
+    const hideConfirmBtn = props.hideConfirmBtn ? props.hideConfirmBtn : false;
 
     const handleConfirm = () => {
         if (props.onConfirm) {
@@ -30,11 +33,13 @@ const AppModal = (props) => {
 
                 <View style={styles.actions}>
                     <TouchableOpacity onPress={() => navigation.pop()}>
-                        <Text style={styles.button}>Cancel</Text>
+                        <Text style={styles.button}>{cancelText}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={handleConfirm} disabled={props.disabled}>
-                        <Text style={[styles.button, styles.buttonPrimary, props.disabled ? styles.disabled : null]}>Save</Text>
-                    </TouchableOpacity>
+                    {!hideConfirmBtn ? (
+                        <TouchableOpacity onPress={handleConfirm} disabled={props.disabled}>
+                            <Text style={[styles.button, styles.buttonPrimary, props.disabled ? styles.disabled : null]}>{confirmText}</Text>
+                        </TouchableOpacity>
+                    ) : null}
                 </View>
             </View>
         </View>
