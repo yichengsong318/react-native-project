@@ -9,6 +9,14 @@ const OutgoingInviteItem = ({ onPress, invite }) => {
     const { inviteStore } = useContext(storeContext);
     const [isPending, setIsPending] = useState(false);
 
+    const displayNameFromInvite = () => {
+        if (invite.user) {
+            return `${invite.user.firstName} ${invite.user.lastName}`;
+        }
+
+        return invite.email;
+    };
+
     const handleCancelInvite = async () => {
         setIsPending(true);
         await inviteStore.cancelInvite(invite);
@@ -22,7 +30,7 @@ const OutgoingInviteItem = ({ onPress, invite }) => {
     return (
         <InfoBox
             onPress={onPress}
-            title={`${invite.user.firstName} ${invite.user.lastName} - ${invite.status}`}
+            title={`${displayNameFromInvite()} - ${invite.status}`}
             subtitle={formatDateDistance(invite.createdAt)}
         >
             {invite.status === 'pending' ? (
