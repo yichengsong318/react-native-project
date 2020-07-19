@@ -27,6 +27,12 @@ export class GoalStore {
         return this.goals.filter(goal => goal.user.id !== this.rootStore.userStore.user.id);
     }
 
+    @computed
+    get isGoalOwner() {
+        if (!this.currentGoal) return false;
+        return this.currentGoal.user.id === this.rootStore.userStore.user.id;
+    }
+
     @action
     async refresh() {
         try {
@@ -137,6 +143,32 @@ export class GoalStore {
             return true;
         } catch (error) {
             showMessage({ message: 'NetworkError: Failed to delete goal', type: 'danger' });
+            return false;
+        }
+    }
+
+    @action
+    async removePartner(targetGoal, targetUser) {
+        try {
+            const res = await api.makeApiDelRequest(`goals/${targetGoal.id}/partner/${targetUser.id}`);
+            if (!res.ok) {
+                const message = res.body.error ? res.body.error.message : 'Error: Failed to remove partner from goal';
+                showMessage({ message, type: 'danger' });
+                return false;
+            }
+
+            this.goals = this.goals.map((goal) => {
+                if (goal.id === targetGoal.id) {
+                    goal.partners = goal.partners.filter((partner) => partner.user.id !== targetUser.id);
+                }
+
+                return { ...goal };
+            });
+
+            this.save();
+            return true;
+        } catch (error) {
+            showMessage({ message: 'NetworkError: Failed to remove partner from goal', type: 'danger' });
             return false;
         }
     }

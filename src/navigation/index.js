@@ -17,6 +17,7 @@ import GoalPlan from "../screens/goals/GoalPlan";
 import TaskEdit from "../screens/goals/TaskEdit";
 import Invites from "../screens/Invites";
 import Invitation from "../screens/Invitation";
+import ConfirmModal from "../screens/modals/ConfirmModal";
 import RenameGoalModal from "../screens/modals/RenameGoalModal";
 import TaskLabelsModal from "../screens/modals/TaskLabelsModal";
 import Settings from "../screens/Settings";
@@ -109,6 +110,7 @@ const modalOptions = () => ({
 const Modal = createStackNavigator();
 const ModalScreen = () => (
     <Modal.Navigator screenOptions={{ headerShown: false }}>
+        <RootStack.Screen name="ConfirmModal" component={ConfirmModal} options={modalOptions}/>
         <RootStack.Screen name="RenameGoalModal" component={RenameGoalModal} options={modalOptions}/>
         <RootStack.Screen name="TaskLabelsModal" component={TaskLabelsModal} options={modalOptions}/>
     </Modal.Navigator>

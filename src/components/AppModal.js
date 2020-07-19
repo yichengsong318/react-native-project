@@ -9,6 +9,7 @@ const AppModal = (props) => {
     const confirmText = props.confirmText ? props.confirmText : 'Save';
     const cancelText = props.cancelText ? props.cancelText : 'Cancel';
     const hideConfirmBtn = props.hideConfirmBtn ? props.hideConfirmBtn : false;
+    const confirmBtnColor = props.confirmBtnColor ? { color: props.confirmBtnColor } : { color: appStyles.colors.primary };
 
     const handleConfirm = () => {
         if (props.onConfirm) {
@@ -37,7 +38,16 @@ const AppModal = (props) => {
                     </TouchableOpacity>
                     {!hideConfirmBtn ? (
                         <TouchableOpacity onPress={handleConfirm} disabled={props.disabled}>
-                            <Text style={[styles.button, styles.buttonPrimary, props.disabled ? styles.disabled : null]}>{confirmText}</Text>
+                            <Text
+                                style={[
+                                    styles.button,
+                                    styles.buttonPrimary,
+                                    confirmBtnColor,
+                                    props.disabled ? styles.disabled : null
+                                ]}
+                            >
+                                {confirmText}
+                            </Text>
                         </TouchableOpacity>
                     ) : null}
                 </View>
@@ -84,7 +94,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     buttonPrimary: {
-        color: appStyles.colors.linkDark,
         fontWeight: 'bold',
     },
     disabled: {
