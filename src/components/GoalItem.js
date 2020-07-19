@@ -65,7 +65,7 @@ const GoalItem = ({ onPress, goal }) => {
                 title={goal.name}
                 subtitle={goal.type.toUpperCase()}
             >
-                <GoalPartners goal={goal}/>
+                <GoalPartners goal={goal} hideMenu/>
             </InfoBox>
         </Swipeable>
     )

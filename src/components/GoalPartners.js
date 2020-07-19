@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
 import { Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
 import { useNavigation } from '@react-navigation/native';
@@ -6,7 +6,7 @@ import { storeContext } from '../store';
 import UserAvatar from './UserAvatar';
 import * as appStyles from '../utils/styles';
 
-const GoalPartners = ({ goal }) => {
+const GoalPartners = ({ goal, hideMenu }) => {
     const navigation = useNavigation();
     const { goalStore, userStore } = useContext(storeContext);
 
@@ -45,7 +45,7 @@ const GoalPartners = ({ goal }) => {
                 goal.partners.map((partner) => (
                     partner.user ? (
                         <Menu key={partner.id}>
-                            <MenuTrigger>
+                            <MenuTrigger disabled={hideMenu}>
                                 <UserAvatar
                                     user={partner.user}
                                     style={styles.avatar}
