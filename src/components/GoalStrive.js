@@ -14,8 +14,10 @@ import * as appStyles from '../utils/styles';
 const GoalStrive = observer(() => {
     const navigation = useNavigation();
     const store = useContext(storeContext);
+
     const goal = store.goalStore.currentGoal;
     const tasks = store.taskStore.tasks;
+    const isGoalOwner = store.goalStore.isGoalOwner;
 
     return (
         <View style={styles.GoalStrive}>
@@ -28,12 +30,18 @@ const GoalStrive = observer(() => {
                             <StriveProgressBar goal={goal} showDates/>
                         </View>
                     ) : (
-                        <AppButton
-                            color={appStyles.colors.success}
-                            title="Start Goal"
-                        />
+                        <View>
+                            {isGoalOwner ? (
+                                <AppButton
+                                    color={appStyles.colors.success}
+                                    title="Start Goal"
+                                />
+                            ) : null}
+                        </View>
                     )}
-                    <Text style={styles.taskHeaderTitle}>My Tasks</Text>
+                    <Text style={styles.taskHeaderTitle}>
+                        {isGoalOwner ? 'My Tasks' : 'Tasks'}
+                    </Text>
                 </View>
 
                 <RefreshableScrollView style={styles.goalMain} onRefresh="fetchCurrentGoal">
@@ -44,9 +52,11 @@ const GoalStrive = observer(() => {
                 </RefreshableScrollView>
             </View>
 
-            <View style={styles.footer}>
-                <TaskAddBar/>
-            </View>
+            {isGoalOwner ? (
+                <View style={styles.footer}>
+                    <TaskAddBar/>
+                </View>
+            ) : null}
         </View>
     );
 });

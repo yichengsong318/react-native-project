@@ -8,12 +8,13 @@ const InputTextarea = React.forwardRef((props, ref) => (
         underlineColorAndroid="transparent"
         returnKeyType="done"
         {...props}
-        style={[styles.InputTextarea, props.style]}
+        style={[styles.InputTextarea, props.style, props.disabled ? styles.disabled : null]}
         returnKeyType="done"
         blurOnSubmit={true}
         onSubmitEditing={()=>{Keyboard.dismiss()}}
         textAlignVertical="top"
         multiline={true}
+        editable={!props.disabled}
     />
 ));
 
@@ -27,6 +28,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         backgroundColor: '#fff',
         color: '#444',
+    },
+    disabled: {
+        backgroundColor: appStyles.colors.disabledInputBg,
     },
 });
 

@@ -11,6 +11,7 @@ export const colors = {
     danger: '#e74c3c',
     success: '#2ecc71',
     muted: '#8492a6',
+    disabledInputBg: '#f5f5f5',
 };
 
 export const goalThemes = {

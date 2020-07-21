@@ -11,6 +11,9 @@ const AnimatedIcon = Animated.createAnimatedComponent(Icon, { useNativeDriver: t
 const TaskItem = ({ navigation, task }) => {
     const store = useContext(storeContext);
     const swipeableTask = useRef(null);
+    const goal = store.goalStore.currentGoal;
+    const canCompleteTask = store.goalStore.isGoalOwner && (goal.goalStrive && goal.goalStrive.startedAt) || goal.type === 'todo';
+    const canDeleteTask = store.goalStore.isGoalOwner && goal.goalStrive || goal.type === 'todo';
 
     const handleTaskCompletion = () => {
         if (task.completedAt) {
@@ -94,10 +97,10 @@ const TaskItem = ({ navigation, task }) => {
         <Swipeable
             ref={swipeableTask}
             friction={3}
-            renderLeftActions={renderLeftActions}
+            renderLeftActions={canCompleteTask ? renderLeftActions : null}
             leftThreshold={30}
-            onSwipeableLeftOpen={handleTaskCompletion}
-            renderRightActions={renderRightActions}
+            onSwipeableLeftOpen={canCompleteTask ? handleTaskCompletion : null}
+            renderRightActions={canDeleteTask ? renderRightActions : null}
             rightThreshold={60}
         >
             <TouchableOpacity style={styles.TaskItem} activeOpacity={1} onPress={handleViewTask}>

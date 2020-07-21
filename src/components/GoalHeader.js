@@ -12,6 +12,7 @@ import * as appStyles from '../utils/styles';
 const GoalHeader = ({ goal }) => {
     const navigation = useNavigation();
     const store = useContext(storeContext);
+    const canEditGoal = store.goalStore.isGoalOwner && goal.goalStrive || goal.type === 'todo';
 
     const handleViewInvites = async () => {
         await store.inviteStore.refresh();
@@ -72,27 +73,33 @@ const GoalHeader = ({ goal }) => {
                                 <Text>View STRIVE Plan</Text>
                             </MenuOption>
                         ) : null}
-                        <MenuOption onSelect={renameGoal}>
-                            <Text>Rename Goal</Text>
-                        </MenuOption>
+                        {canEditGoal ? (
+                            <MenuOption onSelect={renameGoal}>
+                                <Text>Rename Goal</Text>
+                            </MenuOption>
+                        ) : null}
                         <MenuOption onSelect={() => store.taskStore.setShowCompletedTasks(!store.taskStore.showCompletedTasks)}>
                             <Text>{store.taskStore.showCompletedTasks ? 'Hide' : 'Show'} Completed Tasks</Text>
                         </MenuOption>
-                        <MenuOption onSelect={deleteGoal}>
-                            <Text style={styles.danger}>Delete Goal</Text>
-                        </MenuOption>
+                        {canEditGoal ? (
+                            <MenuOption onSelect={deleteGoal}>
+                                <Text style={styles.danger}>Delete Goal</Text>
+                            </MenuOption>
+                        ) : null}
                     </MenuOptions>
                 </Menu>
             </View>
             <View style={styles.headerBottom}>
                 <GoalPartners goal={goal}/>
-                <AppButton
-                    title="Invite"
-                    style={styles.inviteButton}
-                    color="#fff"
-                    outline
-                    onPress={handleViewInvites}
-                />
+                {canEditGoal ? (
+                    <AppButton
+                        title="Invite"
+                        style={styles.inviteButton}
+                        color="#fff"
+                        outline
+                        onPress={handleViewInvites}
+                    />
+                ) : null}
             </View>
         </LinearGradient>
     );

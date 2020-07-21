@@ -14,11 +14,12 @@ import * as appStyles from '../../utils/styles';
 import AppButton from '../../components/AppButton';
 
 const TaskEdit = observer(({ navigation }) => {
-    const { taskStore } = useContext(storeContext);
+    const { taskStore, goalStore } = useContext(storeContext);
     const task = taskStore.currentTask;
     const [name, setName] = useState(task.name ? task.name : null);
     const [dueDate, setDueDate] = useState(task.dueDate ? task.dueDate : null);
     const [description, setDescription] = useState(task.description ? task.description : null);
+    const canEditTask = goalStore.isGoalOwner && goalStore.currentGoal.goalStrive || goalStore.currentGoal.type === 'todo';
 
     useEffect(() => {
         setName(task.name);
@@ -37,6 +38,8 @@ const TaskEdit = observer(({ navigation }) => {
     };
 
     const openLabelsModal = () => {
+        if (!canEditTask) return;
+
         navigation.navigate('Modal', { screen: 'TaskLabelsModal' });
     };
 
@@ -49,11 +52,11 @@ const TaskEdit = observer(({ navigation }) => {
                     color: '#fff',
                     onPress: () => navigation.navigate('GoalView'),
                 }}
-                right={{
+                right={canEditTask ? {
                     title: 'Save',
                     color: '#fff',
                     onPress: handleSaveTask,
-                }}
+                } : null}
             />
 
             <RefreshableScrollView style={styles.main} onRefresh="fetchCurrentTask">
@@ -64,6 +67,7 @@ const TaskEdit = observer(({ navigation }) => {
                         onChangeText={setName}
                         placeholder="Task name..."
                         style={styles.input}
+                        disabled={!canEditTask}
                     />
                 </View>
                 <View style={styles.formGroup}>
@@ -73,6 +77,7 @@ const TaskEdit = observer(({ navigation }) => {
                         placeholder="Set due date..."
                         onChange={setDueDate}
                         style={styles.input}
+                        disabled={!canEditTask}
                     />
                 </View>
                 <View style={styles.formGroup}>
@@ -82,6 +87,7 @@ const TaskEdit = observer(({ navigation }) => {
                         placeholder="Write description..."
                         onChangeText={setDescription}
                         style={styles.input}
+                        disabled={!canEditTask}
                     />
                 </View>
 
@@ -104,7 +110,9 @@ const TaskEdit = observer(({ navigation }) => {
                             </View>
                         ) : (
                             <View>
-                                <AppButton title="Add label" link onPress={openLabelsModal}/>
+                                {canEditTask ? (
+                                    <AppButton title="Add label" link onPress={openLabelsModal}/>
+                                ) : null}
                             </View>
                         )}
                     </View>

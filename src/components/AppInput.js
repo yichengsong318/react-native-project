@@ -8,7 +8,8 @@ const AppInput = React.forwardRef((props, ref) => (
         underlineColorAndroid="transparent"
         returnKeyType="done"
         {...props}
-        style={[styles.AppInput, props.style]}
+        style={[styles.AppInput, props.style, props.disabled ? styles.disabled : null]}
+        editable={!props.disabled}
     />
 ));
 
@@ -21,6 +22,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         backgroundColor: '#fff',
         color: '#444',
+    },
+    disabled: {
+        backgroundColor: appStyles.colors.disabledInputBg,
     },
 });
 

@@ -28,7 +28,7 @@ const InputDate = (props) => {
     }
 
     return (
-        <View style={[styles.InputDate, props.style]}>
+        <View style={[styles.InputDate, props.style, props.disabled ? styles.disabled : null]}>
             <View style={styles.main}>
                 {dateStr ?
                     <Text>{format(new Date(dateStr))}</Text> :
@@ -37,7 +37,7 @@ const InputDate = (props) => {
                         <Text></Text>
                 }
 
-                { dateStr ?
+                { dateStr && !props.disabled ?
                     <TouchableOpacity style={styles.clearButton} onPress={handleClearDate}>
                         <Text style={styles.clearText}>Clear</Text>
                     </TouchableOpacity> : null
@@ -62,6 +62,7 @@ const InputDate = (props) => {
                         color: appStyles.colors.linkDark,
                     },
                 }}
+                disabled={props.disabled}
             />
         </View>
     );
@@ -96,6 +97,9 @@ const styles = StyleSheet.create({
     },
     placeholder: {
         color: appStyles.colors.muted,
+    },
+    disabled: {
+        backgroundColor: appStyles.colors.disabledInputBg,
     },
     DatePicker: {
         width: '120%',

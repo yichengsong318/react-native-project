@@ -70,8 +70,6 @@ export class TaskStore {
                 return false;
             }
 
-            showMessage({ message: 'Task has been created', type: 'success' });
-
             this.tasks = [res.body, ...this.tasks];
             this.save();
 
