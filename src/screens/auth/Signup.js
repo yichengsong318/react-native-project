@@ -1,5 +1,6 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { storeContext } from '../../store';
 import AppScrollView from '../../components/AppScrollView';

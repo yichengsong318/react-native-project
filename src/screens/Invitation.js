@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import { observer } from "mobx-react-lite";
 import { storeContext } from '../store';
 import AppScrollView from '../components/AppScrollView';
@@ -56,23 +57,35 @@ const Invitation = observer(({ navigation }) => {
                         </View>
                     )}
                 </AppScrollView>
-            ) : null}
+            ) : (
+                <View style={styles.noInvite}>
+                    <Text style={styles.noInviteText}>
+                        This invitation has already been accepted/declined
+                    </Text>
+                    <AppButton
+                        title="See my invites"
+                        onPress={() => navigation.navigate('Invites')}
+                    />
+                </View>
+            )}
 
-            <View style={styles.footer}>
-                <AppButton
-                    style={styles.button}
-                    title="Accept"
-                    color={appStyles.colors.success}
-                    onPress={handleAcceptInvite}
-                />
-                <AppButton
-                    style={styles.button}
-                    title="Decline"
-                    color={appStyles.colors.danger}
-                    outline
-                    onPress={handleDeclineInvite}
-                />
-            </View>
+            { invite ? (
+                <View style={styles.footer}>
+                    <AppButton
+                        style={styles.button}
+                        title="Accept"
+                        color={appStyles.colors.success}
+                        onPress={handleAcceptInvite}
+                    />
+                    <AppButton
+                        style={styles.button}
+                        title="Decline"
+                        color={appStyles.colors.danger}
+                        outline
+                        onPress={handleDeclineInvite}
+                    />
+                </View>
+            ) : null}
         </View>
     );
 });
@@ -112,7 +125,15 @@ const styles = StyleSheet.create({
     button: {
         flex: 1,
         margin: 5,
-    }
+    },
+    noInvite: {
+        padding: 15,
+    },
+    noInviteText: {
+        marginVertical: 30,
+        textAlign: 'center',
+        fontSize: 22,
+    },
 });
 
 export default Invitation;

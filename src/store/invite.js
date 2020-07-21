@@ -69,7 +69,7 @@ export class InviteStore {
             await this.rootStore.refresh();
             this.rootStore.goalStore.setCurrentGoal(res.body.goal);
 
-            this.save();
+            await this.save();
 
             return true;
         } catch (error) {
@@ -93,7 +93,7 @@ export class InviteStore {
             this.currentInviteId = null;
             this.invites = this.invites.filter(invite => invite.id !== targetInvite.id);
 
-            this.save();
+            await this.save();
 
             return true;
         } catch (error) {
