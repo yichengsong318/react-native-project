@@ -148,7 +148,7 @@ export class GoalStore {
     }
 
     @action
-    async removePartner(targetGoal, targetUser) {
+    async removePartner(targetGoal, targetUser, isLeavingGoal) {
         try {
             const res = await api.makeApiDelRequest(`goals/${targetGoal.id}/partner/${targetUser.id}`);
             if (!res.ok) {
@@ -157,15 +157,21 @@ export class GoalStore {
                 return false;
             }
 
-            this.goals = this.goals.map((goal) => {
-                if (goal.id === targetGoal.id) {
-                    goal.partners = goal.partners.filter((partner) => partner.user.id !== targetUser.id);
-                }
+            if (isLeavingGoal) {
+                // User is leaving Goal
+                this.goals = this.goals.filter(goal => goal.id !== targetGoal.id);
+            } else {
+                // Owner is removing a Partner from Goal
+                this.goals = this.goals.map((goal) => {
+                    if (goal.id === targetGoal.id) {
+                        goal.partners = goal.partners.filter((partner) => partner.user.id !== targetUser.id);
+                    }
 
-                return { ...goal };
-            });
+                    return { ...goal };
+                });
+            }
 
-            this.save();
+            await this.save();
             return true;
         } catch (error) {
             showMessage({ message: 'NetworkError: Failed to remove partner from goal', type: 'danger' });

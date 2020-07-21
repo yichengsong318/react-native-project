@@ -32,7 +32,7 @@ const GoalPartners = ({ goal, hideMenu }) => {
                 confirmText: 'Leave Goal',
                 isDanger: true,
                 onConfirm: async () => {
-                    await goalStore.removePartner(goal, user);
+                    await goalStore.removePartner(goal, user, true);
                     navigation.navigate('GoalList');
                 },
             },

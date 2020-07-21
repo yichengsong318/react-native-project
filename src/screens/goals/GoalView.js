@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { observer } from "mobx-react-lite";
 import { storeContext } from '../../store';
@@ -10,10 +10,17 @@ const GoalView = observer(({ navigation }) => {
     const { goalStore } = useContext(storeContext);
     const goal = goalStore.currentGoal;
 
+    useEffect(() => {
+        if (!goal) {
+            navigation.navigate('GoalList');
+            return;
+        }
+    }, [goal]);
+
     return (
         <View style={styles.GoalViewScreen}>
-            {goal.type === 'todo' ? (<GoalTodo/>) : null}
-            {goal.type === 'strive' ? (<GoalStrive/>) : null}
+            {goal && goal.type === 'todo' ? (<GoalTodo/>) : null}
+            {goal && goal.type === 'strive' ? (<GoalStrive/>) : null}
         </View>
     );
 });

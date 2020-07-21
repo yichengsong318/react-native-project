@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { StyleSheet, Animated, Alert, Platform, TouchableOpacity } from "react-native";
 import { RectButton } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
@@ -45,7 +45,7 @@ const GoalItem = ({ onPress, goal }) => {
                 confirmText: 'Leave Goal',
                 isDanger: true,
                 onConfirm: async () => {
-                    await store.goalStore.removePartner(goal, store.userStore.user);
+                    await store.goalStore.removePartner(goal, store.userStore.user, true);
                     await store.goalStore.refresh();
                 },
             },
