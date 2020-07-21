@@ -37,7 +37,7 @@ const GoalHeader = ({ goal }) => {
                     onPress: async () => {
                         await store.goalStore.removeGoal(goal);
 
-                        navigation.navigate('Goals');
+                        navigation.navigate('GoalList');
                     },
                 },
             ],
@@ -54,7 +54,7 @@ const GoalHeader = ({ goal }) => {
                 <View style={styles.headerTopMain}>
                     <TouchableOpacity
                         style={styles.backButton}
-                        onPress={() => navigation.navigate('Goals')}
+                        onPress={() => navigation.navigate('GoalList')}
                     >
                         <Icon name="chevron-left" size={20} style={styles.backButtonIcon}/>
                     </TouchableOpacity>

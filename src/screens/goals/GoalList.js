@@ -9,7 +9,7 @@ import SectionHeader from '../../components/SectionHeader';
 import GoalItem from '../../components/GoalItem';
 import * as appStyles from '../../utils/styles';
 
-const Goals = observer(({ navigation }) => {
+const GoalList = observer(({ navigation }) => {
     const store = useContext(storeContext);
 
     const handleViewGoal = async (goal) => {
@@ -39,7 +39,7 @@ const Goals = observer(({ navigation }) => {
     );
 
     return (
-        <View style={styles.GoalsScreen}>
+        <View style={styles.GoalListScreen}>
             <Header
                 right={{
                     title: 'Create',
@@ -64,7 +64,7 @@ const Goals = observer(({ navigation }) => {
 });
 
 const styles = StyleSheet.create({
-    GoalsScreen: {
+    GoalListScreen: {
         flex: 1,
         backgroundColor: appStyles.colors.bg10,
     },
@@ -85,4 +85,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Goals;
+export default GoalList;

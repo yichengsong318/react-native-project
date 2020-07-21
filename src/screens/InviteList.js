@@ -8,7 +8,7 @@ import SectionHeader from '../components/SectionHeader';
 import IncomingInviteItem from '../components/IncomingInviteItem';
 import * as appStyles from '../utils/styles';
 
-const Invites = observer(({ navigation }) => {
+const InviteList = observer(({ navigation }) => {
     const { inviteStore } = useContext(storeContext);
 
     const handleViewInvite = (invite) => {
@@ -18,7 +18,7 @@ const Invites = observer(({ navigation }) => {
     };
 
     return (
-        <View style={styles.InvitesScreen}>
+        <View style={styles.InviteListScreen}>
             <Header/>
 
             <RefreshableScrollView>
@@ -40,7 +40,7 @@ const Invites = observer(({ navigation }) => {
 });
 
 const styles = StyleSheet.create({
-    InvitesScreen: {
+    InviteListScreen: {
         flex: 1,
         backgroundColor: appStyles.colors.bg10,
     },
@@ -57,4 +57,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Invites;
+export default InviteList;

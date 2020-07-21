@@ -1,13 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { storeContext } from '../../store';
 import AppModal from '../../components/AppModal';
 import * as appStyles from '../../utils/styles';
 
 const PremiumModal = ({ navigation }) => {
-    const store = useContext(storeContext);
-
     const handleViewPremium = () => {
         Linking.openURL('https://www.strive2goal.com/premium');
     };

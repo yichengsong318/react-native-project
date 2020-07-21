@@ -32,7 +32,7 @@ const Signup = ({ navigation }) => {
         navigation.dispatch(
             CommonActions.reset({
                 index: 0,
-                routes: [{ name: 'Goals' }],
+                routes: [{ name: 'GoalList' }],
             }),
         );
     }

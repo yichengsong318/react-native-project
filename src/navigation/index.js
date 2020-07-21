@@ -8,14 +8,14 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Loading from '../screens/Loading';
 import Login from '../screens/auth/Login';
 import Signup from '../screens/auth/Signup';
-import Goals from "../screens/goals/Goals";
+import Goals from "../screens/goals/GoalList";
 import GoalView from "../screens/goals/GoalView";
 import GoalInvites from "../screens/goals/GoalInvites";
 import GoalTypeSelection from "../screens/goals/GoalTypeSelection";
 import GoalStriveSetup from "../screens/goals/GoalStriveSetup";
 import GoalPlan from "../screens/goals/GoalPlan";
 import TaskEdit from "../screens/goals/TaskEdit";
-import Invites from "../screens/Invites";
+import Invites from "../screens/InviteList";
 import Invitation from "../screens/Invitation";
 import ConfirmModal from "../screens/modals/ConfirmModal";
 import RenameGoalModal from "../screens/modals/RenameGoalModal";
@@ -35,7 +35,7 @@ const createTabOptions = ({ route }, iconName) => {
     );
 
     const routeName = route.state ? route.state.routes[route.state.index].name : '';
-    const tabBarVisible = routeName && !/^Goals|^Invites|^Settings$/.test(routeName) ? false : true;
+    const tabBarVisible = routeName && !/^GoalList|^InviteList|^Settings$/.test(routeName) ? false : true;
 
     return { tabBarIcon, tabBarVisible };
 };
@@ -59,7 +59,7 @@ const AuthStackScreen = () => (
 const GoalStack = createStackNavigator();
 const GoalStackScreen = () => (
     <GoalStack.Navigator screenOptions={{ headerShown: false }}>
-        <GoalStack.Screen name="Goals" component={Goals}/>
+        <GoalStack.Screen name="GoalList" component={Goals}/>
         <GoalStack.Screen name="GoalView" component={GoalView}/>
         <GoalStack.Screen name="GoalInvites" component={GoalInvites}/>
         <GoalStack.Screen name="GoalPlan" component={GoalPlan}/>
@@ -76,7 +76,7 @@ const GoalStackScreen = () => (
 const InviteStack = createStackNavigator();
 const InviteStackScreen = () => (
     <InviteStack.Navigator screenOptions={{ headerShown: false }}>
-        <InviteStack.Screen name="Invites" component={Invites}/>
+        <InviteStack.Screen name="InviteList" component={Invites}/>
         <InviteStack.Screen name="Invitation" component={Invitation}/>
     </InviteStack.Navigator>
 );

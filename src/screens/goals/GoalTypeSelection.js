@@ -35,7 +35,7 @@ const GoalTypeSelection = ({ navigation }) => {
             <Header
                 left={{
                     title: 'Cancel',
-                    onPress: () => navigation.navigate('Goals'),
+                    onPress: () => navigation.navigate('GoalList'),
                 }}
                 right={{
                     title: 'Create',

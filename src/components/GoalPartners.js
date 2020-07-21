@@ -33,7 +33,7 @@ const GoalPartners = ({ goal, hideMenu }) => {
                 isDanger: true,
                 onConfirm: async () => {
                     await goalStore.removePartner(goal, user);
-                    navigation.navigate('Goals');
+                    navigation.navigate('GoalList');
                 },
             },
         });

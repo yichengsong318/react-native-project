@@ -81,7 +81,7 @@ const GoalStriveSetup = ({ navigation }) => {
 
     const handleSaveAndExit = async () => {
         await handleSaveGoal();
-        navigation.replace('Goals');
+        navigation.replace('GoalList');
     };
 
     const prev = () => {
@@ -129,7 +129,7 @@ const GoalStriveSetup = ({ navigation }) => {
             <Header
                 left={{
                     title: 'Cancel',
-                    onPress: () => navigation.navigate('Goals'),
+                    onPress: () => navigation.navigate('GoalList'),
                 }}
             />
 

@@ -16,13 +16,39 @@ const Invitation = observer(({ navigation }) => {
     const handleAcceptInvite = async () => {
         await inviteStore.acceptInvite(invite);
 
-        navigation.navigate('GoalView');
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{
+                    name: 'TabScreen',
+                    params: {
+                        screen: 'Goals',
+                        params: {
+                            screen: 'GoalView'
+                        },
+                    },
+                }],
+            },
+        ));
     };
 
     const handleDeclineInvite = async () => {
         await inviteStore.declineInvite(invite);
 
-        navigation.navigate('Invites');
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{
+                    name: 'TabScreen',
+                    params: {
+                        screen: 'Invites',
+                        params: {
+                            screen: 'InviteList',
+                        },
+                    },
+                }],
+            },
+        ));
     };
 
     return (
@@ -32,7 +58,7 @@ const Invitation = observer(({ navigation }) => {
                 left={{
                     title: 'Invites',
                     icon: 'chevron-left',
-                    onPress: () => navigation.navigate('Invites'),
+                    onPress: () => navigation.navigate('InviteList'),
                 }}
             />
 
@@ -64,7 +90,7 @@ const Invitation = observer(({ navigation }) => {
                     </Text>
                     <AppButton
                         title="See my invites"
-                        onPress={() => navigation.navigate('Invites')}
+                        onPress={() => navigation.navigate('InviteList')}
                     />
                 </View>
             )}
