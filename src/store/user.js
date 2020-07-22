@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage";
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import { showMessage } from 'react-native-flash-message';
 import * as api from '../api';
 
@@ -10,6 +10,15 @@ export class UserStore {
 
     @observable user = null;
     @observable token = null;
+
+    @computed
+    get isPremium() {
+        if (!this.user) return false;
+
+        if (this.user.role === 'admin') return true;
+
+        return this.user.subscription && new Date(this.user.subscription.graceEndsAt) > new Date();
+    }
 
     @action
     async login(email, password) {

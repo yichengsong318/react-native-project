@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { storeContext } from '../../store';
 import AppModal from '../../components/AppModal';
 import * as appStyles from '../../utils/styles';
 
 const TaskLabelsModal = ({ navigation }) => {
-    const { taskStore } = useContext(storeContext);
+    const { taskStore, userStore } = useContext(storeContext);
     const task = taskStore.currentTask;
     const [labels, setLabels] = useState(task.labels ? task.labels : []);
 
@@ -23,6 +23,10 @@ const TaskLabelsModal = ({ navigation }) => {
         await taskStore.updateTask(task, { labels: newLabels })
     };
 
+    const handleViewPremium = () => {
+        navigation.navigate('Modal', { screen: 'PremiumModal' });
+    };
+
     return (
         <AppModal
             style={styles.TaskLabelsModal}
@@ -33,13 +37,14 @@ const TaskLabelsModal = ({ navigation }) => {
             {Object.entries(appStyles.labelColors).map(([colorName, color]) => (
                 <TouchableOpacity
                     key={colorName}
-                    style={[styles.label, { backgroundColor: color }]}
-                    onPress={() => handleAddLabel(colorName)}
+                    onPress={userStore.isPremium ? () => handleAddLabel(colorName) : handleViewPremium}
                 >
-                    <View style={styles.iconBox}>
-                        {labels.find(c => c === colorName) ? (
-                            <Icon name="check" size={16} style={styles.icon}/>
-                        ) : null}
+                    <View style={[styles.label, { backgroundColor: color }, !userStore.isPremium ? styles.disabled : null]}>
+                        <View style={styles.iconBox}>
+                            {labels.find(c => c === colorName) ? (
+                                <Icon name="check" size={16} style={styles.icon}/>
+                                ) : null}
+                        </View>
                     </View>
                 </TouchableOpacity>
             ))}
@@ -68,6 +73,9 @@ const styles = StyleSheet.create({
     },
     icon: {
         color: '#fff',
+    },
+    disabled: {
+        opacity: 0.5,
     },
 });
 
