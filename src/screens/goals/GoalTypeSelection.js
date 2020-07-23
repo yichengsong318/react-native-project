@@ -74,7 +74,6 @@ const GoalTypeSelection = ({ navigation }) => {
                         onChangeText={setName}
                         placeholder="Goal name"
                         onSubmitEditing={handleCreateGoal}
-                        disabled={isPending || !name}
                     />
                 </View>
             </AppScrollView>

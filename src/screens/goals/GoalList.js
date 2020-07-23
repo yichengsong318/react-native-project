@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React, { useContext } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { observer } from "mobx-react-lite";
+import { showMessage } from 'react-native-flash-message';
 import { storeContext } from '../../store';
 import RefreshableScrollView from '../../components/RefreshableScrollView';
 import Header from '../../components/Header';
@@ -10,13 +11,14 @@ import GoalItem from '../../components/GoalItem';
 import * as appStyles from '../../utils/styles';
 
 const GoalList = observer(({ navigation }) => {
-    const store = useContext(storeContext);
+    const { goalStore, userStore } = useContext(storeContext);
+    const withinGoalLimits = userStore.isPremium || !userStore.isPremium && goalStore.getMyGoals.length < 5;
 
     const handleViewGoal = async (goal) => {
-        store.goalStore.setCurrentGoal(goal);
-        await store.goalStore.fetchCurrentGoal();
+        goalStore.setCurrentGoal(goal);
+        await goalStore.fetchCurrentGoal();
 
-        if (store.goalStore.currentGoal.goalStrive && store.goalStore.currentGoal.goalStrive.inSetup) {
+        if (goalStore.currentGoal.goalStrive && goalStore.currentGoal.goalStrive.inSetup) {
             navigation.navigate('GoalStriveSetup');
             return;
         }
@@ -24,9 +26,15 @@ const GoalList = observer(({ navigation }) => {
         navigation.navigate('GoalView');
     }
 
+    const handleReachedGoalLimit = () => {
+        showMessage({ message: 'You reached the maximum limit of 5 Goals', type: 'warning'});
+
+        navigation.navigate('Modal', { screen: 'PremiumModal' });
+    };
+
     const goalsByType = [
-        ['My Goals', store.goalStore.getMyGoals],
-        ['Help Others', store.goalStore.getJoinedGoals],
+        ['My Goals', goalStore.getMyGoals],
+        ['Help Others', goalStore.getJoinedGoals],
     ];
 
     const GoalTypeGroup = ({ type, goals }) => (
@@ -44,12 +52,12 @@ const GoalList = observer(({ navigation }) => {
                 right={{
                     title: 'Create',
                     icon: 'plus',
-                    onPress: () => navigation.navigate('GoalTypeSelection'),
+                    onPress: withinGoalLimits ? () => navigation.navigate('GoalTypeSelection') : handleReachedGoalLimit,
                 }}
             />
 
             <RefreshableScrollView>
-                {store.goalStore.goals.length ?
+                {goalStore.goals.length ?
                     goalsByType.map(([type, goals]) => (
                         <GoalTypeGroup key={type} type={type} goals={goals}/>
                     )) :
