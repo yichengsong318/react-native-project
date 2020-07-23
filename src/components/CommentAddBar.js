@@ -1,7 +1,9 @@
 import React, { useContext, useState, useRef } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Keyboard } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { storeContext } from '../store';
 import AppInput from './AppInput';
+import InputPhoto from './InputPhoto';
 import * as appStyles from '../utils/styles';
 
 const CommentAddBar = () => {
@@ -21,6 +23,12 @@ const CommentAddBar = () => {
         Keyboard.dismiss();
     };
 
+    const handleUploadImage = async (file) => {
+        if (!file) return;
+
+        await taskStore.uploadAttachment(taskStore.currentTask, file);
+    };
+
     return (
         <View style={styles.CommentAddBar}>
             <AppInput
@@ -30,6 +38,9 @@ const CommentAddBar = () => {
                 placeholder="write a comment..."
                 onSubmitEditing={handleCreateComment}
             />
+            <InputPhoto onChange={handleUploadImage}>
+                <Icon name="paperclip" size={20} style={styles.photoIcon}/>
+            </InputPhoto>
             <TouchableOpacity
                 style={[styles.button, isPending || !message ? styles.disabled : null]}
                 onPress={handleCreateComment}
@@ -45,6 +56,7 @@ const styles = StyleSheet.create({
     CommentAddBar: {
         flex: 1,
         flexDirection: 'row',
+        alignItems: 'center',
     },
     input: {
         flex: 1,
@@ -64,6 +76,11 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#fff',
         fontWeight: 'bold',
+    },
+    photoIcon: {
+        paddingHorizontal: 3,
+        marginRight: appStyles.goals.gutter,
+        color: appStyles.colors.muted,
     },
     disabled: {
         backgroundColor: appStyles.colors.muted,

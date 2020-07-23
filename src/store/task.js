@@ -178,6 +178,30 @@ export class TaskStore {
     }
 
     @action
+    async uploadAttachment(targetTask, file) {
+        showMessage({ message: 'Uploading photo...', type: 'info' });
+
+        try {
+            const res = await api.makeApiPhotoPostRequest(`tasks/${targetTask.id}/attachment`, file);
+            if (!res.ok) {
+                showMessage({ message: 'Error: Photo upload rejected', type: 'danger' });
+                return false;
+            }
+
+            showMessage({ message: 'Photo uploaded', type: 'success' });
+
+            await this.fetchCurrentTask();
+            this.save();
+
+            return true;
+        } catch (error) {
+            console.log('error', error);
+            showMessage({ message: 'NetworkError: Failed to upload photo', type: 'danger' });
+            return false;
+        }
+    }
+
+    @action
     async removeAttachment(targetAttachment) {
         try {
             const res = await api.makeApiDelRequest(`tasks/attachments/${targetAttachment.id}`);

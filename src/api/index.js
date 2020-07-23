@@ -57,13 +57,13 @@ export async function makeApiDelRequest(url, options = {}) {
     return makeRequest(getApiUrl(url), _.merge(getApiOptions(), { method: 'DELETE' }, options));
 }
 
-export async function makeApiPhotoPostRequest(photo) {
+export async function makeApiPhotoPostRequest(url, file) {
     const formData = new FormData();
-    formData.append('photo', {
-        name: photo.fileName,
-        type: photo.type || 'image/jpeg', // TODO: figure out why this isn't always set.
-        uri: Platform.OS === 'android' ? photo.uri : photo.uri.replace('file://', ''),
+    formData.append('file', {
+        name: file.fileName,
+        type: file.type || 'image/jpeg', // TODO: figure out why this isn't always set.
+        uri: Platform.OS === 'android' ? file.uri : file.uri.replace('file://', ''),
     });
 
-    return makeRequest(getApiUrl('photos'), _.merge(getApiOptions(), { method: 'POST', body: formData }));
+    return makeRequest(getApiUrl(url), _.merge(getApiOptions(), { method: 'POST', body: formData }));
 }
