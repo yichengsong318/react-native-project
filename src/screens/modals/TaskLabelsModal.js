@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { storeContext } from '../../store';
 import AppModal from '../../components/AppModal';

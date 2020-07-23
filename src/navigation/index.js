@@ -19,6 +19,7 @@ import Invites from "../screens/InviteList";
 import Invitation from "../screens/Invitation";
 import ConfirmModal from "../screens/modals/ConfirmModal";
 import RenameGoalModal from "../screens/modals/RenameGoalModal";
+import GoalThemeModal from "../screens/modals/GoalThemeModal";
 import TaskLabelsModal from "../screens/modals/TaskLabelsModal";
 import PremiumModal from "../screens/modals/PremiumModal";
 import Settings from "../screens/Settings";
@@ -113,6 +114,7 @@ const ModalScreen = () => (
     <Modal.Navigator screenOptions={{ headerShown: false }}>
         <RootStack.Screen name="ConfirmModal" component={ConfirmModal} options={modalOptions}/>
         <RootStack.Screen name="RenameGoalModal" component={RenameGoalModal} options={modalOptions}/>
+        <RootStack.Screen name="GoalThemeModal" component={GoalThemeModal} options={modalOptions}/>
         <RootStack.Screen name="TaskLabelsModal" component={TaskLabelsModal} options={modalOptions}/>
         <RootStack.Screen name="PremiumModal" component={PremiumModal} options={modalOptions}/>
     </Modal.Navigator>

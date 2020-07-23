@@ -23,6 +23,10 @@ const GoalHeader = ({ goal }) => {
         navigation.navigate('Modal', { screen: 'RenameGoalModal' });
     };
 
+    const changeGoalTheme = () => {
+        navigation.navigate('Modal', { screen: 'GoalThemeModal' });
+    };
+
     const deleteGoal = async () => {
         Alert.alert(
             'Delete Goal',
@@ -47,7 +51,7 @@ const GoalHeader = ({ goal }) => {
 
     return (
         <LinearGradient
-            colors={goal.theme ? appStyles.goalThemes[goal.theme] : appStyles.goalThemes.default}
+            colors={goal.theme ? appStyles.goalThemes[goal.theme] : appStyles.goalThemes.strive2goal}
             style={styles.GoalHeader}
         >
             <View style={styles.headerTop}>
@@ -76,6 +80,11 @@ const GoalHeader = ({ goal }) => {
                         {canEditGoal ? (
                             <MenuOption onSelect={renameGoal}>
                                 <Text>Rename Goal</Text>
+                            </MenuOption>
+                        ) : null}
+                        {canEditGoal ? (
+                            <MenuOption onSelect={changeGoalTheme}>
+                                <Text>Change Theme</Text>
                             </MenuOption>
                         ) : null}
                         <MenuOption onSelect={() => store.taskStore.setShowCompletedTasks(!store.taskStore.showCompletedTasks)}>

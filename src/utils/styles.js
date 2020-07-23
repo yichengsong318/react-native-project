@@ -20,7 +20,7 @@ export const goalThemes = {
     ocean: ['#169bff', '#38F5D3'],
     bloom: ['#9F76FC', '#FE6D92'],
     solar: ['#ff7e22', '#fff205'],
-    lime: ['#ffed12', '#00c15'],
+    lime: ['#ffed12', '#00c158'],
 };
 
 export const labelColors = {
