@@ -1,14 +1,18 @@
 import React, { useContext, useState, useRef } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Keyboard } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 import { storeContext } from '../store';
 import AppInput from './AppInput';
 import * as appStyles from '../utils/styles';
 
 const GoalInviteSearchBar = ({ goal }) => {
-    const { inviteStore } = useContext(storeContext);
+    const navigation = useNavigation();
+    const { inviteStore, userStore } = useContext(storeContext);
     const [isPending, setIsPending] = useState(false);
     const [email, setEmail] = useState(null);
     const emailInput = useRef(null);
+    const withinPartnerLimits = userStore.isPremium && goal.partners.length < 3 || !userStore.isPremium && goal.partners.length < 1;
 
     const handleSendInvite = async () => {
         setIsPending(true);
@@ -18,6 +22,12 @@ const GoalInviteSearchBar = ({ goal }) => {
         setEmail(null);
         emailInput.current.clear();
         Keyboard.dismiss();
+    };
+
+    const handleReachedPartnerLimit = () => {
+        showMessage({ message: 'You reached the maximum number of Partners on your Goal', type: 'warning' });
+
+        navigation.navigate('Modal', { screen: 'PremiumModal' });
     };
 
     return (
@@ -31,7 +41,7 @@ const GoalInviteSearchBar = ({ goal }) => {
             />
             <TouchableOpacity
                 style={[styles.button, isPending || !email ? styles.disabled : null]}
-                onPress={handleSendInvite}
+                onPress={withinPartnerLimits ? handleSendInvite : handleReachedPartnerLimit}
                 disabled={isPending || !email}
             >
                 <Text style={styles.buttonText}>Send Invite</Text>

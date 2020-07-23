@@ -27,7 +27,7 @@ const GoalList = observer(({ navigation }) => {
     }
 
     const handleReachedGoalLimit = () => {
-        showMessage({ message: 'You reached the maximum limit of 5 Goals', type: 'warning'});
+        showMessage({ message: 'You reached the maximum limit of 5 Goals', type: 'warning' });
 
         navigation.navigate('Modal', { screen: 'PremiumModal' });
     };
