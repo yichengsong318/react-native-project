@@ -1,5 +1,7 @@
 import React, { useContext, useState, useRef } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Keyboard } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { storeContext } from '../store';
 import AppInput from './AppInput';
@@ -7,7 +9,8 @@ import InputPhoto from './InputPhoto';
 import * as appStyles from '../utils/styles';
 
 const CommentAddBar = () => {
-    const { taskStore } = useContext(storeContext);
+    const navigation = useNavigation();
+    const { taskStore, userStore } = useContext(storeContext);
     const [isPending, setIsPending] = useState(false);
     const [message, setMessage] = useState(null);
     const messageInput = useRef(null);
@@ -29,6 +32,12 @@ const CommentAddBar = () => {
         await taskStore.uploadAttachment(taskStore.currentTask, file);
     };
 
+    const handleViewPremium = () => {
+        showMessage({ message: 'Get Strive2Goal Premium for image uploads', type: 'warning' });
+
+        navigation.navigate('Modal', { screen: 'PremiumModal' });
+    };
+
     return (
         <View style={styles.CommentAddBar}>
             <AppInput
@@ -38,9 +47,15 @@ const CommentAddBar = () => {
                 placeholder="write a comment..."
                 onSubmitEditing={handleCreateComment}
             />
-            <InputPhoto onChange={handleUploadImage}>
-                <Icon name="paperclip" size={20} style={styles.photoIcon}/>
-            </InputPhoto>
+            {userStore.isPremium ? (
+                <InputPhoto onChange={handleUploadImage}>
+                    <Icon name="paperclip" size={20} style={styles.photoIcon}/>
+                </InputPhoto>
+            ) : (
+                <TouchableOpacity onPress={handleViewPremium}>
+                    <Icon name="paperclip" size={20} style={styles.photoIcon}/>
+                </TouchableOpacity>
+            )}
             <TouchableOpacity
                 style={[styles.button, isPending || !message ? styles.disabled : null]}
                 onPress={handleCreateComment}
