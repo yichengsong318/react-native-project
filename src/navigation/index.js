@@ -21,6 +21,7 @@ import ConfirmModal from "../screens/modals/ConfirmModal";
 import RenameGoalModal from "../screens/modals/RenameGoalModal";
 import GoalThemeModal from "../screens/modals/GoalThemeModal";
 import TaskLabelsModal from "../screens/modals/TaskLabelsModal";
+import TaskRecurringModal from "../screens/modals/TaskRecurringModal";
 import PremiumModal from "../screens/modals/PremiumModal";
 import Settings from "../screens/Settings";
 import * as appStyles from '../utils/styles';
@@ -112,11 +113,12 @@ const modalOptions = () => ({
 const Modal = createStackNavigator();
 const ModalScreen = () => (
     <Modal.Navigator screenOptions={{ headerShown: false }}>
-        <RootStack.Screen name="ConfirmModal" component={ConfirmModal} options={modalOptions}/>
-        <RootStack.Screen name="RenameGoalModal" component={RenameGoalModal} options={modalOptions}/>
-        <RootStack.Screen name="GoalThemeModal" component={GoalThemeModal} options={modalOptions}/>
-        <RootStack.Screen name="TaskLabelsModal" component={TaskLabelsModal} options={modalOptions}/>
-        <RootStack.Screen name="PremiumModal" component={PremiumModal} options={modalOptions}/>
+        <Modal.Screen name="ConfirmModal" component={ConfirmModal} options={modalOptions}/>
+        <Modal.Screen name="RenameGoalModal" component={RenameGoalModal} options={modalOptions}/>
+        <Modal.Screen name="GoalThemeModal" component={GoalThemeModal} options={modalOptions}/>
+        <Modal.Screen name="TaskLabelsModal" component={TaskLabelsModal} options={modalOptions}/>
+        <Modal.Screen name="TaskRecurringModal" component={TaskRecurringModal} options={modalOptions}/>
+        <Modal.Screen name="PremiumModal" component={PremiumModal} options={modalOptions}/>
     </Modal.Navigator>
 );
 

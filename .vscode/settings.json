@@ -2,7 +2,8 @@
     "cSpell.words": [
         "mobx",
         "refreshable",
-        "swipeable",
+        "rrule",
+        "swipeable"
     ],
     "files.exclude": {
         "android": true,

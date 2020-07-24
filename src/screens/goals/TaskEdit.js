@@ -1,8 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { observer } from "mobx-react-lite";
+import { observer } from 'mobx-react-lite';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { storeContext } from '../../store';
+import { formatRRule } from '../../utils/formatting';
 import RefreshableScrollView from '../../components/RefreshableScrollView';
 import Header from '../../components/Header';
 import AppInput from '../../components/AppInput';
@@ -10,14 +11,15 @@ import InputTextarea from '../../components/InputTextarea';
 import InputDate from '../../components/InputDate';
 import CommentList from '../../components/CommentList';
 import CommentAddBar from '../../components/CommentAddBar';
-import * as appStyles from '../../utils/styles';
 import AppButton from '../../components/AppButton';
+import * as appStyles from '../../utils/styles';
 
 const TaskEdit = observer(({ navigation }) => {
     const { taskStore, goalStore } = useContext(storeContext);
     const task = taskStore.currentTask;
     const [name, setName] = useState(task.name ? task.name : null);
     const [dueDate, setDueDate] = useState(task.dueDate ? task.dueDate : null);
+    const [recurrence, setRecurrence] = useState(task.recurrence ? task.recurrence : null);
     const [description, setDescription] = useState(task.description ? task.description : null);
     const canEditTask = goalStore.isGoalOwner && goalStore.currentGoal.goalStrive || goalStore.currentGoal.type === 'todo';
 
@@ -25,6 +27,7 @@ const TaskEdit = observer(({ navigation }) => {
         setName(task.name);
         setDueDate(task.dueDate);
         setDescription(task.description);
+        setRecurrence(task.recurrence);
     }, [task]);
 
     const handleSaveTask = async () => {
@@ -32,6 +35,7 @@ const TaskEdit = observer(({ navigation }) => {
             name,
             dueDate,
             description,
+            recurrence,
         });
 
         navigation.navigate('GoalView');
@@ -41,6 +45,12 @@ const TaskEdit = observer(({ navigation }) => {
         if (!canEditTask) return;
 
         navigation.navigate('Modal', { screen: 'TaskLabelsModal' });
+    };
+
+    const openRecurringModal = () => {
+        if (!canEditTask) return;
+
+        navigation.navigate('Modal', { screen: 'TaskRecurringModal' });
     };
 
     return (
@@ -119,6 +129,27 @@ const TaskEdit = observer(({ navigation }) => {
                 </View>
 
                 <View style={styles.formGroup}>
+                    <Text style={styles.formLabel}>Repeat</Text>
+
+                    <View style={styles.formContent}>
+                        {recurrence ? (
+                            <View style={styles.recurringContent}>
+                                <Text>{formatRRule(recurrence)}</Text>
+                                {canEditTask ? (
+                                    <AppButton title="Clear" link onPress={() => setRecurrence(null)}/>
+                                ) : null}
+                            </View>
+                        ) : (
+                            <View>
+                                {canEditTask ? (
+                                    <AppButton title="Set schedule" link onPress={openRecurringModal}/>
+                                ) : null}
+                            </View>
+                        )}
+                    </View>
+                </View>
+
+                <View style={styles.formGroup}>
                     <Text style={styles.formLabel}>Comments</Text>
                     <CommentList task={task}/>
                 </View>
@@ -182,6 +213,10 @@ const styles = StyleSheet.create({
     addLabelIcon: {
         marginLeft: 5,
         color: appStyles.colors.muted,
+    },
+    recurringContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 });
 
