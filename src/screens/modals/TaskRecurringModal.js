@@ -25,8 +25,37 @@ const TaskRecurringModal = ({ navigation }) => {
     const daysOfWeek = { 0: 'MO', 1: 'TU', 2: 'WE', 3: 'TH', 4: 'FR', 5: 'SA', 6: 'SU' };
 
     useEffect(() => {
-        // console.log(weeklyRepeatDay);
-    }, [weeklyRepeatDay]);
+        if (taskStore.currentTask && taskStore.currentTask.recurrence) {
+            const rule = RRule.fromString(taskStore.currentTask.recurrence);
+
+            if (rule.origOptions.bymonthday) {
+                setFrequency('Monthly');
+                setMonthlyRepeatBy('day_of_month');
+            } else if (rule.origOptions.bysetpos && rule.origOptions.byweekday) {
+                setFrequency('Monthly');
+                setMonthlyRepeatBy('day_of_week');
+            } else if (rule.origOptions.byweekday) {
+                setFrequency('Weekly');
+                setWeeklyRepeatDay(rule.origOptions.byweekday[0].weekday);
+
+                if (rule.origOptions.interval) {
+                    setWeeklyFrequency(rule.origOptions.interval)
+                }
+            }
+
+            if (rule.origOptions.count) {
+                setNeverEnds(false);
+                setEndsOnType('occurrences');
+                setEndsOnCount(rule.origOptions.count);
+            }
+
+            if (rule.origOptions.until) {
+                setNeverEnds(false);
+                setEndsOnType('date');
+                setEndsOnUntil(rule.origOptions.until);
+            }
+        }
+    }, [taskStore.currentTask.recurrence]);
 
     const handleCreateSchedule = async () => {
         let options = {};
@@ -67,8 +96,6 @@ const TaskRecurringModal = ({ navigation }) => {
 
         const recurrence = new RRule(options).toString();
         await taskStore.updateTask(taskStore.currentTask, { recurrence });
-
-        // navigation.pop();
     };
 
     const NeverEndsToggle = () => (

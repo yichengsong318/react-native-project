@@ -134,7 +134,11 @@ const TaskEdit = observer(({ navigation }) => {
                     <View style={styles.formContent}>
                         {recurrence ? (
                             <View style={styles.recurringContent}>
-                                <Text>{formatRRule(recurrence)}</Text>
+                                <TouchableOpacity
+                                    onPress={canEditTask ? openRecurringModal : () => {}}
+                                >
+                                    <Text>{formatRRule(recurrence)}</Text>
+                                </TouchableOpacity>
                                 {canEditTask ? (
                                     <AppButton title="Clear" link onPress={() => setRecurrence(null)}/>
                                 ) : null}
