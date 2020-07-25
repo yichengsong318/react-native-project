@@ -4,6 +4,7 @@ import { RectButton } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { storeContext } from '../store'
+import { formatDateShort } from '../utils/formatting';
 import * as appStyles from '../utils/styles';
 
 const AnimatedIcon = Animated.createAnimatedComponent(Icon, { useNativeDriver: true });
@@ -104,7 +105,20 @@ const TaskItem = ({ navigation, task }) => {
             rightThreshold={60}
         >
             <TouchableOpacity style={styles.TaskItem} activeOpacity={1} onPress={handleViewTask}>
-                <Text style={[styles.name, task.completedAt ? styles.nameComplete : null]} numberOfLines={1}>{task.name}</Text>
+                <View style={styles.main}>
+                    <Text
+                        style={[styles.name, task.completedAt ? styles.nameComplete : null]}
+                        numberOfLines={1}
+                    >
+                        {task.name}
+                    </Text>
+                    <View style={styles.meta}>
+                        {task.recurrence ? (<Icon name="sync" style={styles.metaIcon}/>) : null}
+                        {task.attachmentCount > 0 ? (<Icon name="paperclip" style={styles.metaIcon}/>) : null}
+                        {task.commentCount > 0 ? (<Icon name="comment-dots" style={styles.metaIcon}/>) : null}
+                        {task.dueDate ? (<Text style={styles.dueDate}>{formatDateShort(task.dueDate)}</Text>) : null}
+                    </View>
+                </View>
                 <View style={styles.labelList}>
                     {task.labels && task.labels.map((label) => (
                         <View
@@ -126,7 +140,33 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         backgroundColor: appStyles.colors.bg00,
     },
+    main: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    meta: {
+        marginLeft: 15,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    metaIcon: {
+        marginLeft: 10,
+        fontSize: 16,
+        color: appStyles.colors.muted,
+    },
+    dueDate: {
+        marginLeft: 10,
+        borderWidth: 1,
+        borderColor: appStyles.colors.muted,
+        borderRadius: appStyles.general.borderRadius,
+        paddingHorizontal: 6,
+        fontSize: 13,
+        textAlign: 'center',
+        color: appStyles.colors.muted,
+    },
     name: {
+        flex: 1,
         fontWeight: 'bold',
     },
     nameComplete: {
