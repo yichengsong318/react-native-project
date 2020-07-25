@@ -6,6 +6,7 @@ import { storeContext } from '../store';
 import Header from '../components/Header';
 import AppScrollView from '../components/AppScrollView';
 import AppInput from '../components/AppInput';
+import UserAvatar from '../components/UserAvatar';
 import * as appStyles from '../utils/styles';
 
 const Settings = ({ navigation }) => {
@@ -17,6 +18,10 @@ const Settings = ({ navigation }) => {
     // const [password, setPassword] = useState();
     // const [password2, setPassword2] = useState();
     // const passwordIsValid = currentPassword && password && password.length > 5 && (password === password2);
+
+    const handleSaveSettings = async () => {
+        // ...
+    };
 
     const handleLogout = async () => {
         await userStore.logout();
@@ -36,12 +41,27 @@ const Settings = ({ navigation }) => {
 
     return (
         <View style={styles.SettingsScreen}>
-            <Header/>
+            <Header
+                right={{
+                    title: 'Save',
+                    color: '#fff',
+                    onPress: handleSaveSettings,
+                }}
+            />
 
             <AppScrollView>
                 <View style={styles.container}>
-                    <AppInput value={`${user.firstName} ${user.lastName}`} title="Name" disabled/>
-                    <AppInput value={user.email} title="Email" keyboardType="email-address" disabled/>
+                    <View style={[styles.formGroup, styles.avatarContainer]}>
+                        <UserAvatar user={user} size="lg"/>
+                    </View>
+
+                    <View style={styles.formGroup}>
+                        <AppInput value={`${user.firstName} ${user.lastName}`} title="Name" disabled/>
+                    </View>
+
+                    <View style={styles.formGroup}>
+                        <AppInput value={user.email} title="Email" keyboardType="email-address" disabled/>
+                    </View>
                     {/* <InputPassword value={currentPassword} onChange={setCurrentPassword} title="Current Password"/>
                     <InputPassword value={password} onChange={setPassword} title="New Password"/>
                     <InputPassword value={password2} onChange={setPassword2} title="Confirm Password"/> */}
@@ -65,8 +85,16 @@ const styles = StyleSheet.create({
     container: {
         padding: 15,
     },
+    formGroup: {
+        marginBottom: 15,
+    },
+    avatarContainer: {
+        paddingTop: 30,
+        paddingBottom: 15,
+        alignItems: 'center',
+    },
     accountOptions: {
-        marginTop: 40,
+        marginTop: 20,
         marginBottom: 20,
         alignItems: 'center',
         justifyContent: 'flex-start',
