@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import { observer } from 'mobx-react-lite';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { storeContext } from '../../store';
@@ -51,6 +51,27 @@ const TaskEdit = observer(({ navigation }) => {
         if (!canEditTask) return;
 
         navigation.navigate('Modal', { screen: 'TaskRecurringModal' });
+    };
+
+    const handleClearRecurrence = () => {
+        Alert.alert(
+            'Clear Repeat',
+            'Are you sure you no longer want this task to repeat?', [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Clear',
+                    style: 'destructive',
+                    onPress: async () => {
+                        setRecurrence(null)
+                        await taskStore.updateTask(task, { recurrence: null });
+                    },
+                },
+            ],
+            { cancelable: false },
+        );
     };
 
     return (
@@ -140,7 +161,7 @@ const TaskEdit = observer(({ navigation }) => {
                                     <Text>{formatRRule(recurrence)}</Text>
                                 </TouchableOpacity>
                                 {canEditTask ? (
-                                    <AppButton title="Clear" link onPress={() => setRecurrence(null)}/>
+                                    <AppButton title="Clear" link onPress={handleClearRecurrence}/>
                                 ) : null}
                             </View>
                         ) : (
