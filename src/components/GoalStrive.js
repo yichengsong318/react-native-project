@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { StyleSheet, View, Text, Alert } from 'react-native';
 import { observer } from "mobx-react-lite";
 import { useNavigation } from '@react-navigation/native';
 import { storeContext } from '../store';
@@ -14,10 +14,32 @@ import * as appStyles from '../utils/styles';
 const GoalStrive = observer(() => {
     const navigation = useNavigation();
     const store = useContext(storeContext);
+    const [isPending, setIsPending] = useState(false);
 
     const goal = store.goalStore.currentGoal;
     const tasks = store.taskStore.tasks;
     const isGoalOwner = store.goalStore.isGoalOwner;
+
+    const handleStartGoal = () => {
+        Alert.alert(
+            'Ready to start?',
+            'Are you sure you want to start your goal? Starting a goal will begin tracking your progress and involve your Accountability Partner(s) immediately. Once a goal is started, you cannot pause it.', [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Start Goal',
+                    onPress: async () => {
+                        setIsPending(true);
+                        await store.goalStore.startStriveGoal(goal);
+                        setIsPending(false);
+                    },
+                },
+            ],
+            { cancelable: false },
+        );
+    };
 
     return (
         <View style={styles.GoalStrive}>
@@ -35,6 +57,8 @@ const GoalStrive = observer(() => {
                                 <AppButton
                                     color={appStyles.colors.success}
                                     title="Start Goal"
+                                    onPress={handleStartGoal}
+                                    disabled={isPending}
                                 />
                             ) : null}
                         </View>

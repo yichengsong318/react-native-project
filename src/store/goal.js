@@ -150,6 +150,33 @@ export class GoalStore {
     }
 
     @action
+    async startStriveGoal(targetGoal) {
+        try {
+            const res = await api.makeApiPostRequest(`goals/${targetGoal.id}/start`, {
+                startedAt: new Date(),
+            });
+            if (!res.ok) {
+                const message = res.body.error ? res.body.error.message : 'Error: Failed to start goal';
+                showMessage({ message, type: 'danger' });
+                return false;
+            }
+
+            showMessage({ message: 'Goal started!', type: 'success' });
+
+            // Does not update state correctly
+            // this.currentGoal.startedAt = { ...this.currentGoal, startedAt: res.body.startedAt };
+            await this.fetchCurrentGoal();
+
+            this.save();
+            return true;
+        } catch (error) {
+            console.log('error', error)
+            showMessage({ message: 'NetworkError: Failed to start goal', type: 'danger' });
+            return false;
+        }
+    }
+
+    @action
     async removeGoal(targetGoal) {
         try {
             const res = await api.makeApiDelRequest(`goals/${targetGoal.id}`);
