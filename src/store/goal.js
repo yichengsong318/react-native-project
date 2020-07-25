@@ -103,6 +103,29 @@ export class GoalStore {
     }
 
     @action
+    async createStriveGoal(goal) {
+        try {
+            const res = await api.makeApiPostRequest('goals/strive', goal);
+            if (!res.ok) {
+                const message = res.body.error ? res.body.error.message : 'Error: Failed to create STRIVE goal';
+                showMessage({ message, type: 'danger' });
+                return false;
+            }
+
+            this.goals = [...this.goals, res.body];
+            this.setCurrentGoal(res.body);
+            this.rootStore.taskStore.setTasks([]);
+
+            this.save();
+            return true;
+        } catch (error) {
+            console.log('error', error)
+            showMessage({ message: 'NetworkError: Failed to create STRIVE goal', type: 'danger' });
+            return false;
+        }
+    }
+
+    @action
     async updateGoal(targetGoal, patch) {
         try {
             const res = await api.makeApiPatchRequest(`goals/${targetGoal.id}`, patch);

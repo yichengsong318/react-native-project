@@ -104,16 +104,18 @@ const GoalStriveSetup = ({ navigation }) => {
         const cloneStriveAnswers = _.cloneDeep(striveAnswers);
         let lastLetterAnswered = 's';
 
-        for (const { letter, question, answer} of store.goalStore.currentGoal.goalStrive.striveAnswers) {
-            if (!letter) continue;
+        if (store.goalStore.currentGoal && store.goalStore.currentGoal.goalStrive) {
+            for (const { letter, question, answer} of store.goalStore.currentGoal.goalStrive.striveAnswers) {
+                if (!letter) continue;
 
-            const matchingLetter = striveAnswers.find(it => it.letter === letter);
-            if (matchingLetter) {
-                const striveIndex = striveAnswers.indexOf(matchingLetter);
-                cloneStriveAnswers[striveIndex].answer = answer;
+                const matchingLetter = striveAnswers.find(it => it.letter === letter);
+                if (matchingLetter) {
+                    const striveIndex = striveAnswers.indexOf(matchingLetter);
+                    cloneStriveAnswers[striveIndex].answer = answer;
+                }
+
+                lastLetterAnswered = letter;
             }
-
-            lastLetterAnswered = letter;
         }
 
         setStriveAnswers(cloneStriveAnswers);

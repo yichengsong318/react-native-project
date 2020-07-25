@@ -68,6 +68,7 @@ export class InviteStore {
 
             await this.rootStore.refresh();
             this.rootStore.goalStore.setCurrentGoal(res.body.goal);
+            await this.rootStore.goalStore.fetchCurrentGoal();
 
             await this.save();
 

@@ -8,20 +8,24 @@ import AppInput from '../../components/AppInput';
 import * as appStyles from '../../utils/styles';
 
 const GoalTypeSelection = ({ navigation }) => {
-    const store = useContext(storeContext);
+    const { goalStore, userStore } = useContext(storeContext);
     const [type, setType] = useState('todo');
     const [name, setName] = useState('');
     const [isPending, setIsPending] = useState(false);
 
     const handleCreateGoal = async () => {
         setIsPending(true);
-        await store.goalStore.createGoal({ name, type, user: store.userStore.user.id });
-        setIsPending(false);
 
         if (type === 'strive') {
+            await goalStore.createStriveGoal({ name, type, startedAt: new Date(), user: userStore.user.id });
+            setIsPending(false);
+
             navigation.replace('GoalStriveSetup');
             return;
         }
+
+        await goalStore.createGoal({ name, type, user: userStore.user.id });
+        setIsPending(false);
 
         navigation.replace('GoalView');
     };
