@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Switch } from 'react-native';
+import { StyleSheet, View, Text, Switch, TouchableOpacity } from 'react-native';
 import * as dateFns from 'date-fns';
 import { RRule } from 'rrule';
 import { Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
@@ -12,7 +12,7 @@ import InputDate from '../../components/InputDate';
 import * as appStyles from '../../utils/styles';
 
 const TaskRecurringModal = ({ navigation }) => {
-    const { taskStore } = useContext(storeContext);
+    const { taskStore, userStore } = useContext(storeContext);
     const [frequency, setFrequency] = useState('Daily'); // Daily, Weekly, Monthly
     const [neverEnds, setNeverEnds] = useState(true);
     const [weeklyFrequency, setWeeklyFrequency] = useState(1);
@@ -98,19 +98,32 @@ const TaskRecurringModal = ({ navigation }) => {
         await taskStore.updateTask(taskStore.currentTask, { recurrence });
     };
 
-    const NeverEndsToggle = () => (
-        <View style={{ alignItems: 'flex-start' }}>
-            <Text style={styles.label}>Never ends</Text>
+    const viewPremiumModal = () => {
+        navigation.navigate('Modal', { screen: 'PremiumModal' });
+    };
 
-            <Switch
-                trackColor={{ false: '#767577', true: appStyles.colors.success }}
-                thumbColor="#f4f3f4"
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={() => setNeverEnds(prevState => !prevState)}
-                value={neverEnds}
-            />
-        </View>
-    );
+    const NeverEndsToggle = () => {
+        const Component = userStore.isPremium ? View : TouchableOpacity;
+
+        return (
+            <Component
+                style={{ alignItems: 'flex-start' }}
+                onPress={!userStore.isPremium ? viewPremiumModal : () => {}}
+            >
+                <Text style={[styles.label, !userStore.isPremium ? styles.disabled : null]}>Never ends</Text>
+
+                <Switch
+                    trackColor={{ false: '#767577', true: appStyles.colors.success }}
+                    thumbColor="#f4f3f4"
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={() => setNeverEnds(prevState => !prevState)}
+                    value={neverEnds}
+                    disabled={!userStore.isPremium}
+                    style={!userStore.isPremium ? styles.disabled : null}
+                />
+            </Component>
+        );
+    };
 
     const FrequencySelector = () => (
         <Menu style={{ marginBottom: 15 }}>
@@ -132,23 +145,38 @@ const TaskRecurringModal = ({ navigation }) => {
 
     const WeeklyFrequencySelector = () => (
         <View style={{ marginBottom: 15 }}>
-            <Text style={styles.label}>Repeat every</Text>
+            {userStore.isPremium ? (
+                <View>
+                    <Text style={styles.label}>Repeat every</Text>
 
-            <Menu>
-                <MenuTrigger>
-                    <View style={styles.picker}>
+                    <Menu>
+                        <MenuTrigger>
+                            <View style={styles.picker}>
+                                <Text numberOfLines={1}>{weeklyFrequency}</Text>
+                                <Icon name="caret-down" size={18}/>
+                            </View>
+                        </MenuTrigger>
+                        <MenuOptions>
+                            {[1, 2, 3, 4, 5].map((freq) => (
+                                <MenuOption key={freq} onSelect={() => setWeeklyFrequency(freq)}>
+                                    <Text>{freq}</Text>
+                                </MenuOption>
+                            ))}
+                        </MenuOptions>
+                    </Menu>
+                </View>
+            ) : (
+                <TouchableOpacity onPress={viewPremiumModal}>
+                    <Text style={[styles.label, styles.disabled]}>Repeat every</Text>
+
+                    <View
+                        style={[styles.picker, { backgroundColor: appStyles.colors.disabledInputBg }]}
+                    >
                         <Text numberOfLines={1}>{weeklyFrequency}</Text>
                         <Icon name="caret-down" size={18}/>
                     </View>
-                </MenuTrigger>
-                <MenuOptions>
-                    {[1, 2, 3, 4, 5].map((freq) => (
-                        <MenuOption key={freq} onSelect={() => setWeeklyFrequency(freq)}>
-                            <Text>{freq}</Text>
-                        </MenuOption>
-                    ))}
-                </MenuOptions>
-            </Menu>
+                </TouchableOpacity>
+            )}
         </View>
     );
 
@@ -295,6 +323,9 @@ const styles = StyleSheet.create({
     },
     label: {
         fontWeight: 'bold',
+    },
+    disabled: {
+        opacity: 0.6,
     },
 });
 
