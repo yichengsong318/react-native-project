@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableOpacity, ActivityIndicator, Linking } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { storeContext } from '../../store';
@@ -100,6 +100,16 @@ const Signup = ({ navigation }) => {
                         <Text style={{ fontSize: 16, color: '#fff' }}>Already have an account? Login</Text>
                     </TouchableOpacity>
                 </View>
+
+                <View style={[styles.buttonContainer, styles.legalContainer]}>
+                    <TouchableOpacity onPress={() => Linking.openURL('https://www.strive2goal.com/terms')}>
+                        <Text style={{ fontSize: 16, color: '#fff' }}>Terms of Service</Text>
+                    </TouchableOpacity>
+                    <Text style={{ marginHorizontal: 10, color: '#fff' }}>|</Text>
+                    <TouchableOpacity onPress={() => Linking.openURL('https://www.strive2goal.com/privacy')}>
+                        <Text style={{ fontSize: 16, color: '#fff' }}>Privacy Policy</Text>
+                    </TouchableOpacity>
+                </View>
             </AppScrollView>
         </LinearGradient>
     );
@@ -135,6 +145,9 @@ const styles = StyleSheet.create({
     },
     button: {
         flex: 1,
+    },
+    legalContainer: {
+        marginTop: 30,
     },
 });
 
