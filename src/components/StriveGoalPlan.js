@@ -15,7 +15,7 @@ const StriveGoalPlan = ({ goal }) => {
                 }
             }
         }
-    }, [goal]);
+    }, []);
 
     return (
         <View style={styles.StriveGoalPlan}>
