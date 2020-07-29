@@ -1,6 +1,8 @@
 import React, { useContext, useRef } from 'react';
 import { StyleSheet, Animated, Alert, Platform, TouchableOpacity, View, Text } from "react-native";
 import { RectButton } from 'react-native-gesture-handler';
+import { RRule } from 'rrule';
+import * as dateFns from 'date-fns';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { storeContext } from '../store'
@@ -16,22 +18,26 @@ const TaskItem = ({ navigation, task }) => {
     const canCompleteTask = store.goalStore.isGoalOwner && (goal.goalStrive && goal.goalStrive.startedAt) || goal.type === 'todo';
     const canDeleteTask = store.goalStore.isGoalOwner && goal.goalStrive || goal.type === 'todo';
 
-    const handleTaskCompletion = () => {
+    const handleTaskCompletion = async () => {
         if (task.completedAt) {
-            store.taskStore.updateTask(task, { completedAt: null });
+            await store.taskStore.updateTask(task, { completedAt: null });
         } else {
-            store.taskStore.updateTask(task, { completedAt: new Date() });
+            await store.taskStore.updateTask(task, { completedAt: new Date() });
+
+            if (task.recurrence) {
+                await handleCreateTaskFromRecurrence();
+            }
         }
 
         swipeableTask.current.close();
-    }
+    };
 
     const handleViewTask = async () => {
         store.taskStore.setCurrentTask(task);
         await store.taskStore.fetchCurrentTask();
 
         navigation.navigate('TaskEdit');
-    }
+    };
 
     const deleteTask = () => {
         Alert.alert(
@@ -50,6 +56,33 @@ const TaskItem = ({ navigation, task }) => {
             ],
             { cancelable: false },
         );
+    };
+
+    const handleCreateTaskFromRecurrence = async () => {
+        const startDate = dateFns.toDate(new Date());
+        const endDate = dateFns.addMonths(startDate, 1);
+        let recurringDates = RRule.fromString(task.recurrence).between(startDate, endDate);
+
+        recurringDates = recurringDates.filter((d) => dateFns.isAfter(d, startDate));
+
+        if (task.dueDate) {
+            recurringDates = recurringDates
+                .filter((d) => dateFns.isAfter(d, dateFns.parseISO(task.dueDate)))
+                .filter((d) => !dateFns.isSameDay(d, dateFns.parseISO(task.dueDate)));
+        }
+
+        if (!recurringDates.length) return;
+
+        await store.taskStore.createTask({
+            ...task,
+            completedAt: null,
+            dueDate: dateFns.toDate(recurringDates[0]),
+            goal: store.goalStore.currentGoalId,
+            user: store.userStore.user.id,
+        })
+
+        // Remove recurrence on old task
+        await store.taskStore.updateTask(task, { completedAt: new Date(), recurrence: null });
     }
 
     const renderLeftActions = (progress, dragX) => {
@@ -72,7 +105,7 @@ const TaskItem = ({ navigation, task }) => {
                 />
             </View>
         );
-    }
+    };
 
     const renderRightActions = (progress, dragX) => {
         const scale = dragX.interpolate({
@@ -92,7 +125,7 @@ const TaskItem = ({ navigation, task }) => {
                 />
             </ButtonComponent>
         );
-    }
+    };
 
     return (
         <Swipeable
