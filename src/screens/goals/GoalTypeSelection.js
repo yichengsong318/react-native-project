@@ -14,6 +14,8 @@ const GoalTypeSelection = ({ navigation }) => {
     const [isPending, setIsPending] = useState(false);
 
     const handleCreateGoal = async () => {
+        if (isPending || !name) return;
+
         setIsPending(true);
 
         if (type === 'strive') {
