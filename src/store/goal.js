@@ -92,6 +92,7 @@ export class GoalStore {
             this.goals = [...this.goals, res.body];
             this.setCurrentGoal(res.body);
             this.rootStore.taskStore.setTasks([]);
+            this.fetchCurrentGoal();
 
             this.save();
             return true;
@@ -115,6 +116,7 @@ export class GoalStore {
             this.goals = [...this.goals, res.body];
             this.setCurrentGoal(res.body);
             this.rootStore.taskStore.setTasks([]);
+            this.fetchCurrentGoal();
 
             this.save();
             return true;
